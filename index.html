@@ -1003,41 +1003,97 @@
     if (idx >= 0) pendingImages.splice(idx, 1);
   }
 
-  /* ── get auth token directly from localStorage (no network call) ── */
-  function getToken() {
-    try {
-      const raw = localStorage.getItem('gotrue.user');
-      if (!raw) throw new Error('Not logged in — click Admin in the footer');
-      const user = JSON.parse(raw);
-      const token = user && user.token && user.token.access_token;
-      if (!token) throw new Error('No token found — please log out and log in again');
-      return token;
-    } catch(e) {
-      throw new Error(e.message || 'Login error — please log in again');
-    }
+  /* ── github config ── */
+  function ghConfig() {
+    return {
+      owner: localStorage.getItem('ghOwner'),
+      repo:  localStorage.getItem('ghRepo'),
+      token: localStorage.getItem('ghToken')
+    };
   }
+  function isConfigured() {
+    const c = ghConfig(); return c.owner && c.repo && c.token;
+  }
+
+  /* ── admin login modal ── */
+  function loadAdmin() {
+    if (isConfigured()) { showAdminBar(); return; }
+    const modal = document.createElement('div');
+    modal.id = 'setupModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:center;justify-content:center';
+    modal.innerHTML = `
+      <div style="background:#1c1c1c;border:1px solid #2a2a2a;border-radius:8px;padding:2rem;width:min(420px,92vw)">
+        <div style="color:#f71919;font-size:0.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.4rem">Admin Setup</div>
+        <h3 style="color:#f0f0f0;font-size:1.1rem;margin-bottom:1.5rem">Connect to GitHub</h3>
+        <div style="display:flex;flex-direction:column;gap:0.9rem">
+          <div>
+            <label style="display:block;color:#777;font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px">GitHub Username</label>
+            <input id="siOwner" type="text" placeholder="your-username" value="${localStorage.getItem('ghOwner')||''}" style="width:100%;padding:0.65rem 0.9rem;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:3px;color:#f0f0f0;font-size:0.9rem;font-family:inherit;outline:none" />
+          </div>
+          <div>
+            <label style="display:block;color:#777;font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px">Repository Name</label>
+            <input id="siRepo" type="text" placeholder="band-website" value="${localStorage.getItem('ghRepo')||''}" style="width:100%;padding:0.65rem 0.9rem;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:3px;color:#f0f0f0;font-size:0.9rem;font-family:inherit;outline:none" />
+          </div>
+          <div>
+            <label style="display:block;color:#777;font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px">GitHub Personal Access Token</label>
+            <input id="siToken" type="password" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;padding:0.65rem 0.9rem;background:#0a0a0a;border:1px solid #2a2a2a;border-radius:3px;color:#f0f0f0;font-size:0.9rem;font-family:inherit;outline:none" />
+          </div>
+          <div style="display:flex;gap:0.6rem;margin-top:0.4rem">
+            <button onclick="saveSetup()" style="flex:1;padding:0.7rem;background:#f71919;border:none;border-radius:3px;color:#fff;font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Connect</button>
+            <button onclick="document.getElementById('setupModal').remove()" style="padding:0.7rem 1.1rem;background:none;border:1px solid #2a2a2a;border-radius:3px;color:#777;font-size:0.72rem;font-weight:700;cursor:pointer">Cancel</button>
+          </div>
+          <p style="color:#444;font-size:0.7rem;line-height:1.7;margin-top:0.2rem">Token: GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token. Check the <strong style="color:#666">repo</strong> scope.</p>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+
+  function saveSetup() {
+    const owner = document.getElementById('siOwner').value.trim();
+    const repo  = document.getElementById('siRepo').value.trim();
+    const token = document.getElementById('siToken').value.trim();
+    if (!owner || !repo || !token) { alert('Please fill in all three fields.'); return; }
+    localStorage.setItem('ghOwner', owner);
+    localStorage.setItem('ghRepo',  repo);
+    localStorage.setItem('ghToken', token);
+    document.getElementById('setupModal').remove();
+    showAdminBar();
+  }
+
+  function showAdminBar() {
+    const c = ghConfig();
+    document.getElementById('adminBar').classList.add('visible');
+    document.getElementById('adminEmail').textContent = (c.owner && c.repo) ? c.owner + '/' + c.repo : 'Admin';
+  }
+
+  function adminLogout() {
+    localStorage.removeItem('ghToken');
+    disableEditMode();
+    document.getElementById('adminBar').classList.remove('visible');
+  }
+
+  /* restore admin bar on refresh */
+  if (isConfigured()) showAdminBar();
 
   /* ── save changes ── */
   async function saveChanges() {
     const saveBtn = document.getElementById('saveBtn');
     saveBtn.disabled = true;
     try {
-      saveBtn.textContent = 'Getting token...';
-      const token = getToken();
+      const { owner, repo, token } = ghConfig();
+      if (!owner || !repo || !token) throw new Error('Not set up — click Admin to configure');
+      const api = 'https://api.github.com/repos/' + owner + '/' + repo + '/contents/';
 
-      /* upload any dropped images first */
+      /* upload dropped images first */
       if (pendingImages.length) saveBtn.textContent = 'Uploading images...';
       for (const pending of pendingImages) {
         const base64 = pending.dataUrl.split(',')[1];
         const ext = pending.file.name.split('.').pop().toLowerCase();
         const filename = 'images/' + Date.now() + '.' + ext;
-        const ctrl0 = new AbortController();
-        setTimeout(() => ctrl0.abort(), 15000);
-        await fetch('/.netlify/git/github/contents/' + filename, {
+        await fetch(api + filename, {
           method: 'PUT',
-          headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'Upload image', content: base64 }),
-          signal: ctrl0.signal
+          headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'Upload image', content: base64 })
         });
         pending.img.src = filename;
       }
@@ -1048,88 +1104,43 @@
       document.body.classList.remove('edit-mode');
       document.getElementById('adminBar').classList.remove('visible');
       document.querySelectorAll('[data-editable]').forEach(el => {
-        el.removeAttribute('contenteditable');
-        el.removeAttribute('data-editable');
+        el.removeAttribute('contenteditable'); el.removeAttribute('data-editable');
       });
+      document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'none');
       const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
       document.body.classList.add('edit-mode');
       document.getElementById('adminBar').classList.add('visible');
       EDITABLE.forEach(sel => {
         document.querySelectorAll(sel).forEach(el => {
-          el.setAttribute('contenteditable', 'true');
-          el.setAttribute('data-editable', '');
+          el.setAttribute('contenteditable', 'true'); el.setAttribute('data-editable', '');
         });
       });
+      document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'block');
 
+      /* read current SHA */
       saveBtn.textContent = 'Reading from GitHub...';
-      const ctrl1 = new AbortController();
-      const t1 = setTimeout(() => ctrl1.abort(), 12000);
-      const getResp = await fetch('/.netlify/git/github/contents/index.html', {
-        headers: { Authorization: 'Bearer ' + token }, signal: ctrl1.signal
+      const getResp = await fetch(api + 'index.html', {
+        headers: { Authorization: 'token ' + token }
       });
-      clearTimeout(t1);
-      if (!getResp.ok) throw new Error('Could not read file from GitHub (' + getResp.status + ')');
+      if (!getResp.ok) throw new Error('Could not read file (' + getResp.status + ')');
       const fileData = await getResp.json();
 
+      /* write updated file */
       saveBtn.textContent = 'Writing to GitHub...';
       const encoded = btoa(unescape(encodeURIComponent(html)));
-      const ctrl2 = new AbortController();
-      const t2 = setTimeout(() => ctrl2.abort(), 12000);
-      const putResp = await fetch('/.netlify/git/github/contents/index.html', {
+      const putResp = await fetch(api + 'index.html', {
         method: 'PUT',
-        headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Update site content', content: encoded, sha: fileData.sha }),
-        signal: ctrl2.signal
+        headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Update site content', content: encoded, sha: fileData.sha })
       });
-      clearTimeout(t2);
       if (!putResp.ok) throw new Error('GitHub rejected the save (' + putResp.status + ')');
+
       saveBtn.textContent = '✓ Saved!';
       setTimeout(() => { saveBtn.textContent = 'Save Changes'; saveBtn.disabled = false; }, 2500);
     } catch (err) {
       saveBtn.textContent = 'Error: ' + err.message;
       setTimeout(() => { saveBtn.textContent = 'Save Changes'; saveBtn.disabled = false; }, 4000);
     }
-  }
-
-  /* ── logout ── */
-  function doLogout() {
-    localStorage.removeItem('sphsAdminEmail');
-    disableEditMode();
-    document.getElementById('adminBar').classList.remove('visible');
-  }
-  function adminLogout() {
-    doLogout();
-    if (window.netlifyIdentity) { netlifyIdentity.logout(); return; }
-    const s = document.createElement('script');
-    s.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-    s.onload = () => netlifyIdentity.logout();
-    document.head.appendChild(s);
-  }
-
-  /* ── login (lazy load widget) ── */
-  function loadAdmin() {
-    if (window.netlifyIdentity) { netlifyIdentity.open(); return; }
-    const s = document.createElement('script');
-    s.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-    s.onload = () => {
-      netlifyIdentity.on('login', user => { netlifyIdentity.close(); showAdminBar(user); });
-      netlifyIdentity.on('logout', doLogout);
-      netlifyIdentity.open();
-    };
-    document.head.appendChild(s);
-  }
-
-  function showAdminBar(user) {
-    localStorage.setItem('sphsAdminEmail', user.email);
-    document.getElementById('adminBar').classList.add('visible');
-    document.getElementById('adminEmail').textContent = user.email;
-  }
-
-  /* restore admin bar on refresh */
-  const _savedEmail = localStorage.getItem('sphsAdminEmail');
-  if (_savedEmail) {
-    document.getElementById('adminBar').classList.add('visible');
-    document.getElementById('adminEmail').textContent = _savedEmail;
   }
 </script>
 </body>
