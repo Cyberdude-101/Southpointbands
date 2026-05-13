@@ -489,6 +489,15 @@
     }
     [data-editable]:focus { outline: 2px solid var(--accent) !important; outline-offset: 3px; }
     .drag-over { border-color: var(--accent) !important; background: rgba(247,25,25,0.12) !important; }
+    .img-remove-btn {
+      display: none; position: absolute; top: 6px; right: 6px; z-index: 10;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.3);
+      color: #fff; font-size: 14px; line-height: 22px; text-align: center;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .img-remove-btn:hover { background: var(--accent); }
+    .edit-mode .img-remove-btn { display: block; }
 
     /* ─────────── RESPONSIVE ─────────── */
     @media (max-width: 700px) {
@@ -546,6 +555,7 @@
         <span>🎵</span>
         <p>Drop the logo here<br><small>Replace src="" in the code with the image path</small></p>
       </div>
+      <div class="img-remove-btn" onclick="removeImage(this)">×</div>
     </div>
 
     <h1>SPHS<span>Band</span></h1>
@@ -567,18 +577,22 @@
         <div class="photo-slot large">
           <img src="" alt="Band Photo 1" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 1 — replace src="" with image</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
         <div class="photo-slot">
           <img src="" alt="Band Photo 2" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 2</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
         <div class="photo-slot">
           <img src="" alt="Band Photo 3" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 3</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
         <div class="photo-slot wide">
           <img src="" alt="Band Photo 4" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 4 — wide banner shot</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
       </div>
     </div>
@@ -797,6 +811,7 @@
       <div class="group-photo-slot" style="margin-top:3.5rem">
         <img src="" alt="Full Band Photo" onerror="this.style.display='none'" />
         <div class="group-photo-label">Full Band Photo — replace src="" with image</div>
+        <div class="img-remove-btn" onclick="removeImage(this)">×</div>
       </div>
 
       <!-- Director -->
@@ -810,6 +825,7 @@
           <div class="about-bio-img">
             <img src="" alt="Director Photo" onerror="this.style.display='none'" />
             <div class="about-img-placeholder">📸 Director Photo</div>
+            <div class="img-remove-btn" onclick="removeImage(this)">×</div>
           </div>
         </div>
       </div>
@@ -968,6 +984,16 @@
       if (idx >= 0) pendingImages[idx] = entry; else pendingImages.push(entry);
     };
     reader.readAsDataURL(file);
+  }
+
+  /* ── remove image from slot ── */
+  function removeImage(btn) {
+    const slot = btn.parentElement;
+    const img = slot.querySelector('img');
+    if (img) { img.src = ''; img.style.display = 'none'; }
+    slot.querySelectorAll('.photo-label,.logo-fallback,.group-photo-label,.about-img-placeholder').forEach(el => el.style.display = '');
+    const idx = pendingImages.findIndex(p => p.slot === slot);
+    if (idx >= 0) pendingImages.splice(idx, 1);
   }
 
   /* ── get auth token (loads widget if needed) ── */
