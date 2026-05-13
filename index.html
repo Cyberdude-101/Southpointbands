@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Band Name</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -518,18 +519,18 @@
       .half-row    { grid-template-columns: 1fr; }
     }
   </style>
-<style></style></head>
-<body data-new-gr-c-s-check-loaded="14.1290.0" data-gr-ext-installed="" class="" data-new-gr-c-s-loaded="14.1290.0">
+</head>
+<body>
 
 <!-- ══════════ NAV ══════════ -->
 <nav>
   <div class="logo" onclick="go('home')" style="cursor:pointer">SPHS<span>Band</span></div>
   <ul class="nav-links">
     <li><a href="#" class="active" onclick="go('home',   this)">Home</a></li>
-    <li><a href="#" onclick="go('events',  this)">Events</a></li>
-    <li><a href="#" onclick="go('donate',  this)">Donate</a></li>
-    <li><a href="#" onclick="go('contact', this)">Contact</a></li>
-    <li><a href="#" onclick="go('extra',   this)">About</a></li>
+    <li><a href="#"               onclick="go('events',  this)">Events</a></li>
+    <li><a href="#"               onclick="go('donate',  this)">Donate</a></li>
+    <li><a href="#"               onclick="go('contact', this)">Contact</a></li>
+    <li><a href="#"               onclick="go('extra',   this)">About</a></li>
   </ul>
   <button class="hamburger" id="burger" aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -538,10 +539,10 @@
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="#" class="active" onclick="go('home',   this); closeMenu()">Home</a>
-  <a href="#" onclick="go('events',  this); closeMenu()">Events</a>
-  <a href="#" onclick="go('donate',  this); closeMenu()">Donate</a>
-  <a href="#" onclick="go('contact', this); closeMenu()">Contact</a>
-  <a href="#" onclick="go('extra',   this); closeMenu()">About</a>
+  <a href="#"               onclick="go('events',  this); closeMenu()">Events</a>
+  <a href="#"               onclick="go('donate',  this); closeMenu()">Donate</a>
+  <a href="#"               onclick="go('contact', this); closeMenu()">Contact</a>
+  <a href="#"               onclick="go('extra',   this); closeMenu()">About</a>
 </div>
 
 
@@ -553,19 +554,19 @@
     <div class="hero-badge">Gaston County</div>
 
     <!-- Logo slot: replace src="" with your logo file path -->
-    <div class="logo-slot" title="Drag an image here to replace">
-      <img src="" alt="Band Logo" id="logoImg" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'" style="display: none;">
-      <div id="logoFallback" class="logo-fallback" style="display: flex;">
+    <div class="logo-slot">
+      <img src="" alt="Band Logo" id="logoImg" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'" />
+      <div id="logoFallback" class="logo-fallback">
         <span>🎵</span>
         <p>Drop the logo here<br><small>Replace src="" in the code with the image path</small></p>
       </div>
-      <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+      <div class="img-remove-btn" onclick="removeImage(this)">×</div>
     </div>
 
     <h1>SPHS<span>Band</span></h1>
-    <p>Description...</p>
+    <p>Description.</p>
     <div class="hero-btns">
-      <a href="#" class="btn btn-solid" onclick="go('events')">Upcoming Events</a>
+      <a href="#" class="btn btn-solid"   onclick="go('events')">Upcoming Events</a>
       <a href="#" class="btn btn-outline" onclick="go('donate')">Support Us</a>
       <a href="#" class="btn btn-outline" onclick="go('contact')">Get in Touch</a>
     </div>
@@ -578,25 +579,25 @@
       <h2 class="photos-title">Photos</h2>
       <!-- Asymmetric grid: 1 large left, 2 stacked right, 1 wide bottom -->
       <div class="photo-grid">
-        <div class="photo-slot large" title="Drag an image here to replace">
-          <img src="" alt="Band Photo 1" onerror="this.style.display='none'" style="display: none;">
+        <div class="photo-slot large">
+          <img src="" alt="Band Photo 1" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 1 — replace src="" with image</div>
-          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
-        <div class="photo-slot" title="Drag an image here to replace">
-          <img src="" alt="Band Photo 2" onerror="this.style.display='none'" style="display: none;">
+        <div class="photo-slot">
+          <img src="" alt="Band Photo 2" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 2</div>
-          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
-        <div class="photo-slot" title="Drag an image here to replace">
-          <img src="" alt="Band Photo 3" onerror="this.style.display='none'" style="display: none;">
+        <div class="photo-slot">
+          <img src="" alt="Band Photo 3" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 3</div>
-          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
-        <div class="photo-slot wide" title="Drag an image here to replace">
-          <img src="" alt="Band Photo 4" onerror="this.style.display='none'" style="display: none;">
+        <div class="photo-slot wide">
+          <img src="" alt="Band Photo 4" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 4 — wide banner shot</div>
-          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
       </div>
     </div>
@@ -722,7 +723,7 @@
         <!-- Left: title + info -->
         <div>
           <div class="eyebrow">Get in Touch</div>
-          <h2 class="page-title">Contact &amp; Info</h2>
+          <h2 class="page-title">Contact & Info</h2>
           <p style="color:var(--text);font-size:1rem;line-height:1.75;margin-bottom:2rem">Want to get in touch? Reach us directly through any of the channels below or fill out the form.</p>
           <div class="info-block">
             <div class="info-item">
@@ -768,15 +769,15 @@
           <form class="form-stack" onsubmit="submitContact(event)">
             <div>
               <label>Your name</label>
-              <input type="text" placeholder="Jane Smith">
+              <input type="text" placeholder="Jane Smith" />
             </div>
             <div>
               <label>Email</label>
-              <input type="email" placeholder="jane@email.com">
+              <input type="email" placeholder="jane@email.com" />
             </div>
             <div>
               <label>Subject</label>
-              <input type="text" placeholder="Booking inquiry, collab, just saying hi…">
+              <input type="text" placeholder="Booking inquiry, collab, just saying hi…" />
             </div>
             <div>
               <label>Message</label>
@@ -812,10 +813,10 @@
       </div>
 
       <!-- Group photo -->
-      <div class="group-photo-slot" style="margin-top:3.5rem" title="Drag an image here to replace">
-        <img src="" alt="Full Band Photo" onerror="this.style.display='none'" style="display: none;">
+      <div class="group-photo-slot" style="margin-top:3.5rem">
+        <img src="" alt="Full Band Photo" onerror="this.style.display='none'" />
         <div class="group-photo-label">Full Band Photo — replace src="" with image</div>
-        <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+        <div class="img-remove-btn" onclick="removeImage(this)">×</div>
       </div>
 
       <!-- Director -->
@@ -826,10 +827,10 @@
             <h3>Settleslayer</h3>
             <p>Write about Chef</p>
           </div>
-          <div class="about-bio-img" title="Drag an image here to replace">
-            <img src="" alt="Director Photo" onerror="this.style.display='none'" style="display: none;">
+          <div class="about-bio-img">
+            <img src="" alt="Director Photo" onerror="this.style.display='none'" />
             <div class="about-img-placeholder">📸 Director Photo</div>
-            <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+            <div class="img-remove-btn" onclick="removeImage(this)">×</div>
           </div>
         </div>
       </div>
@@ -841,11 +842,11 @@
 
 <!-- ══════════ ADMIN BAR ══════════ -->
 <div id="adminBar" class="admin-bar">
-  <div class="admin-bar-info">Logged in as <strong id="adminEmail">Cyberdude-101/Southpointbands</strong></div>
+  <div class="admin-bar-info">Logged in as <strong id="adminEmail"></strong></div>
   <div class="admin-bar-btns">
     <button id="editBtn" class="admin-btn" onclick="toggleEditMode()">Edit Mode</button>
-    <button id="saveBtn" class="admin-btn save-btn" onclick="saveChanges()" style="display: none;">Save Changes</button>
-    <button id="cancelBtn" class="admin-btn" onclick="disableEditMode()" style="display: none;">Cancel</button>
+    <button id="saveBtn" class="admin-btn save-btn" onclick="saveChanges()" style="display:none">Save Changes</button>
+    <button id="cancelBtn" class="admin-btn" onclick="disableEditMode()" style="display:none">Cancel</button>
     <button class="admin-btn" onclick="adminLogout()">Log Out</button>
   </div>
 </div>
@@ -1126,6 +1127,14 @@
         });
       });
       document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'block');
+      document.querySelectorAll(IMG_SLOTS).forEach(slot => {
+        slot.removeEventListener('dragover',  onDragOver);
+        slot.removeEventListener('dragleave', onDragLeave);
+        slot.removeEventListener('drop',      onDrop);
+        slot.addEventListener('dragover',  onDragOver);
+        slot.addEventListener('dragleave', onDragLeave);
+        slot.addEventListener('drop',      onDrop);
+      });
 
       /* read current SHA */
       saveBtn.textContent = 'Reading from GitHub...';
@@ -1153,6 +1162,5 @@
     }
   }
 </script>
-
-
-</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
+</body>
+</html>
