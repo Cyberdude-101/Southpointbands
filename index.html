@@ -488,6 +488,7 @@
       outline-offset: 3px; border-radius: 2px; cursor: text;
     }
     [data-editable]:focus { outline: 2px solid var(--accent) !important; outline-offset: 3px; }
+    .drag-over { border-color: var(--accent) !important; background: rgba(247,25,25,0.12) !important; }
 
     /* ─────────── RESPONSIVE ─────────── */
     @media (max-width: 700px) {
@@ -897,7 +898,8 @@
     '.about-bio-text h3', '.about-bio-text p',
     '.director-info h3', '.director-info p'
   ];
-
+  const IMG_SLOTS = '.photo-slot, .logo-slot, .group-photo-slot, .director-inner .about-bio-img';
+  const pendingImages = [];
   let editMode = false;
 
   function toggleEditMode() { editMode ? disableEditMode() : enableEditMode(); }
@@ -911,6 +913,12 @@
         el.setAttribute('data-editable', '');
       });
     });
+    document.querySelectorAll(IMG_SLOTS).forEach(slot => {
+      slot.addEventListener('dragover',  onDragOver);
+      slot.addEventListener('dragleave', onDragLeave);
+      slot.addEventListener('drop',      onDrop);
+      slot.title = 'Drag an image here to replace';
+    });
     document.getElementById('editBtn').textContent = 'Editing ON';
     document.getElementById('saveBtn').style.display = 'inline-block';
     document.getElementById('cancelBtn').style.display = 'inline-block';
@@ -923,27 +931,89 @@
       el.removeAttribute('contenteditable');
       el.removeAttribute('data-editable');
     });
+    document.querySelectorAll(IMG_SLOTS).forEach(slot => {
+      slot.removeEventListener('dragover',  onDragOver);
+      slot.removeEventListener('dragleave', onDragLeave);
+      slot.removeEventListener('drop',      onDrop);
+      slot.title = '';
+    });
     document.getElementById('editBtn').textContent = 'Edit Mode';
     document.getElementById('saveBtn').style.display = 'none';
     document.getElementById('cancelBtn').style.display = 'none';
   }
 
+  /* ── image drag-and-drop ── */
+  function onDragOver(e) { e.preventDefault(); this.classList.add('drag-over'); }
+  function onDragLeave()  { this.classList.remove('drag-over'); }
+  function onDrop(e) {
+    e.preventDefault();
+    this.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const slot = this;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      let img = slot.querySelector('img');
+      if (!img) { img = document.createElement('img'); slot.prepend(img); }
+      img.src = ev.target.result;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:block';
+      img.onerror = null;
+      slot.querySelectorAll('.photo-label,.logo-fallback,.group-photo-label,.about-img-placeholder').forEach(el => el.style.display = 'none');
+      const idx = pendingImages.findIndex(p => p.slot === slot);
+      const entry = { slot, file, dataUrl: ev.target.result, img };
+      if (idx >= 0) pendingImages[idx] = entry; else pendingImages.push(entry);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /* ── get auth token (loads widget if needed) ── */
+  async function getToken() {
+    if (!window.netlifyIdentity) {
+      await new Promise(res => {
+        const s = document.createElement('script');
+        s.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+        s.onload = () => {
+          netlifyIdentity.on('login', u => showAdminBar(u));
+          netlifyIdentity.on('logout', doLogout);
+          netlifyIdentity.on('init', res);
+        };
+        document.head.appendChild(s);
+      });
+    }
+    if (!netlifyIdentity.currentUser()) throw new Error('Session expired — please log out and log back in');
+    return await netlifyIdentity.currentUser().jwt();
+  }
+
+  /* ── save changes ── */
   async function saveChanges() {
     const saveBtn = document.getElementById('saveBtn');
     saveBtn.textContent = 'Saving...';
     saveBtn.disabled = true;
     try {
-      // Strip edit state for clean HTML snapshot
+      const token = await getToken();
+
+      /* upload any dropped images first */
+      for (const pending of pendingImages) {
+        const base64 = pending.dataUrl.split(',')[1];
+        const ext = pending.file.name.split('.').pop().toLowerCase();
+        const filename = 'images/' + Date.now() + '.' + ext;
+        await fetch('/.netlify/git/github/contents/' + filename, {
+          method: 'PUT',
+          headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'Upload image', content: base64 })
+        });
+        pending.img.src = filename;
+      }
+      pendingImages.length = 0;
+
+      /* snapshot clean HTML */
       document.body.classList.remove('edit-mode');
       document.getElementById('adminBar').classList.remove('visible');
       document.querySelectorAll('[data-editable]').forEach(el => {
         el.removeAttribute('contenteditable');
         el.removeAttribute('data-editable');
       });
-
       const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-
-      // Restore edit state
       document.body.classList.add('edit-mode');
       document.getElementById('adminBar').classList.add('visible');
       EDITABLE.forEach(sel => {
@@ -953,15 +1023,13 @@
         });
       });
 
-      const token = await netlifyIdentity.currentUser().jwt();
-
       const ctrl1 = new AbortController();
       const t1 = setTimeout(() => ctrl1.abort(), 12000);
       const getResp = await fetch('/.netlify/git/github/contents/index.html', {
         headers: { Authorization: 'Bearer ' + token }, signal: ctrl1.signal
       });
       clearTimeout(t1);
-      if (!getResp.ok) throw new Error('Could not read current file from GitHub (' + getResp.status + ')');
+      if (!getResp.ok) throw new Error('Could not read file from GitHub (' + getResp.status + ')');
       const fileData = await getResp.json();
 
       const encoded = btoa(unescape(encodeURIComponent(html)));
@@ -980,30 +1048,32 @@
     } catch (err) {
       saveBtn.textContent = 'Error: ' + err.message;
       setTimeout(() => { saveBtn.textContent = 'Save Changes'; saveBtn.disabled = false; }, 4000);
-    } finally {
-      // button reset is handled above by timeouts
     }
   }
 
-  /* ── netlify identity (loaded lazily on Admin click) ── */
-  function adminLogout() {
+  /* ── logout ── */
+  function doLogout() {
     localStorage.removeItem('sphsAdminEmail');
     disableEditMode();
     document.getElementById('adminBar').classList.remove('visible');
-    if (window.netlifyIdentity) netlifyIdentity.logout();
+  }
+  function adminLogout() {
+    doLogout();
+    if (window.netlifyIdentity) { netlifyIdentity.logout(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+    s.onload = () => netlifyIdentity.logout();
+    document.head.appendChild(s);
   }
 
+  /* ── login (lazy load widget) ── */
   function loadAdmin() {
     if (window.netlifyIdentity) { netlifyIdentity.open(); return; }
     const s = document.createElement('script');
     s.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
     s.onload = () => {
       netlifyIdentity.on('login', user => { netlifyIdentity.close(); showAdminBar(user); });
-      netlifyIdentity.on('logout', () => {
-        localStorage.removeItem('sphsAdminEmail');
-        disableEditMode();
-        document.getElementById('adminBar').classList.remove('visible');
-      });
+      netlifyIdentity.on('logout', doLogout);
       netlifyIdentity.open();
     };
     document.head.appendChild(s);
@@ -1015,7 +1085,7 @@
     document.getElementById('adminEmail').textContent = user.email;
   }
 
-  /* restore admin bar on page refresh if previously logged in */
+  /* restore admin bar on refresh */
   const _savedEmail = localStorage.getItem('sphsAdminEmail');
   if (_savedEmail) {
     document.getElementById('adminBar').classList.add('visible');
