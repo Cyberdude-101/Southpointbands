@@ -489,6 +489,11 @@
     }
     [data-editable]:focus { outline: 2px solid var(--accent) !important; outline-offset: 3px; }
     .drag-over { border-color: var(--accent) !important; background: rgba(247,25,25,0.12) !important; }
+    .edit-mode .photo-slot,
+    .edit-mode .group-photo-slot,
+    .edit-mode .director-inner .about-bio-img { overflow: visible; }
+    .edit-mode .logo-slot { overflow: visible; }
+    .edit-mode .logo-slot img { border-radius: 50%; }
     .img-remove-btn {
       display: none; position: absolute; top: 6px; right: 6px; z-index: 10;
       width: 24px; height: 24px; border-radius: 50%;
