@@ -940,6 +940,7 @@
       slot.addEventListener('drop',      onDrop);
       slot.title = 'Drag an image here to replace';
     });
+    document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'block');
     document.getElementById('editBtn').textContent = 'Editing ON';
     document.getElementById('saveBtn').style.display = 'inline-block';
     document.getElementById('cancelBtn').style.display = 'inline-block';
@@ -958,6 +959,7 @@
       slot.removeEventListener('drop',      onDrop);
       slot.title = '';
     });
+    document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'none');
     document.getElementById('editBtn').textContent = 'Edit Mode';
     document.getElementById('saveBtn').style.display = 'none';
     document.getElementById('cancelBtn').style.display = 'none';
@@ -1018,7 +1020,10 @@
       });
     }
     if (!netlifyIdentity.currentUser()) throw new Error('Please click Admin in the footer and log in again');
-    return await netlifyIdentity.currentUser().jwt();
+    return await Promise.race([
+      netlifyIdentity.currentUser().jwt(),
+      new Promise((_, rej) => setTimeout(() => rej(new Error('Token timed out — please log out and log in again')), 8000))
+    ]);
   }
 
   /* ── save changes ── */
