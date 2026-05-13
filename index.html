@@ -942,8 +942,12 @@
     document.getElementById('cancelBtn').style.display = 'none';
   }
 
+  /* block browser from opening dropped files on the page */
+  window.addEventListener('dragover', e => e.preventDefault());
+  window.addEventListener('drop',     e => e.preventDefault());
+
   /* ── image drag-and-drop ── */
-  function onDragOver(e) { e.preventDefault(); this.classList.add('drag-over'); }
+  function onDragOver(e) { e.preventDefault(); e.stopPropagation(); this.classList.add('drag-over'); }
   function onDragLeave()  { this.classList.remove('drag-over'); }
   function onDrop(e) {
     e.preventDefault();
