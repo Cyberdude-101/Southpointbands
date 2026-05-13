@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Band Name</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0a0a;
+      --surface: #141414;
+      --card:    #1c1c1c;
+      --border:  #2a2a2a;
+      --accent:  #f71919;
+      --white:   #f0f0f0;
+      --muted:   #777;
+      --text:    #bbb;
+    }
+
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--white); }
+
+    /* ─────────── NAV ─────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 62px;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.2rem; font-weight: 900; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--white);
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-links a:hover  { color: var(--white); }
+    .nav-links a.active { color: var(--white); border-bottom-color: var(--accent); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--white); border-radius: 2px; transition: all 0.28s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile dropdown */
+    .mobile-menu {
+      display: none; position: fixed;
+      top: 62px; left: 0; right: 0; z-index: 199;
+      background: rgba(10,10,10,0.98);
+      flex-direction: column;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--muted); text-decoration: none;
+      font-size: 1rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 1.1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s, background 0.2s;
+    }
+    .mobile-menu a:hover  { color: var(--white); background: var(--surface); }
+    .mobile-menu a.active { color: var(--accent); }
+
+    /* ─────────── PAGES ─────────── */
+    .page { display: none; padding-top: 62px; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ─────────── PAGE 1 — HOME ─────────── */
+    .hero {
+      min-height: calc(100vh - 62px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 3rem 2rem;
+      gap: 1.5rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 0.35rem 1.1rem;
+      border: 1px solid rgba(240, 240, 240, 0.4);
+      border-radius: 2px;
+      color: var(--white);
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(3.2rem, 10vw, 7rem);
+      font-weight: 900; text-transform: uppercase;
+      letter-spacing: -2px; line-height: 0.92;
+      color: var(--white);
+    }
+    .hero h1 span { color: var(--accent); display: block; }
+    .hero p {
+      color: var(--muted); font-size: 1.05rem;
+      line-height: 1.75; max-width: 440px;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem;
+      justify-content: center; flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2rem; border-radius: 3px;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: all 0.2s;
+    }
+    .btn-solid {
+      background: var(--accent); color: #fff;
+    }
+    .btn-solid:hover { background: #c1121f; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(230,57,70,0.35); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─────────── INNER PAGE SHELL ─────────── */
+    .inner { padding: 4.5rem 2rem 5rem; }
+    .wrap  { max-width: 960px; margin: 0 auto; }
+
+    .eyebrow {
+      color: var(--accent); font-size: 0.7rem;
+      font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .page-title {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 900; text-transform: uppercase;
+      letter-spacing: -1px; margin-bottom: 1rem;
+    }
+    .page-lead {
+      color: var(--text); font-size: 1rem;
+      line-height: 1.75; max-width: 540px;
+      margin-bottom: 3rem;
+    }
+
+    /* ─────────── PAGE 2 — EVENTS ─────────── */
+    .events-list { display: flex; flex-direction: column; }
+
+    .event-row {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      align-items: center; gap: 1.5rem;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .event-row:first-child { border-top: 1px solid var(--border); }
+
+    .event-date { text-align: center; }
+    .event-date .day {
+      font-size: 1.9rem; font-weight: 900;
+      color: var(--accent); line-height: 1;
+    }
+    .event-date .mon {
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .event-info h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .event-info p  { color: var(--muted); font-size: 0.85rem; }
+    .event-info .time { color: var(--text); font-size: 0.82rem; margin-top: 0.2rem; }
+
+    .event-action a, .event-action span {
+      display: inline-block;
+      padding: 0.45rem 1.1rem; border-radius: 3px;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      text-decoration: none; transition: all 0.2s;
+      border: 1px solid var(--border); color: var(--muted);
+      white-space: nowrap;
+    }
+    .event-action a:hover { border-color: var(--accent); color: var(--accent); }
+    .event-action .sold { opacity: 0.5; pointer-events: none; }
+
+    /* ─────────── PAGE 3 — DONATE ─────────── */
+    .donate-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .donate-blurb h3 {
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 1rem; color: var(--white);
+    }
+    .donate-blurb p {
+      color: var(--text); font-size: 0.97rem;
+      line-height: 1.8; margin-bottom: 1.2rem;
+    }
+    .donate-blurb ul {
+      list-style: none; display: flex;
+      flex-direction: column; gap: 0.6rem;
+    }
+    .donate-blurb ul li {
+      color: var(--muted); font-size: 0.9rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .donate-blurb ul li::before {
+      content: ''; display: inline-block;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); flex-shrink: 0;
+    }
+
+    .donate-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .perks { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem; }
+    .perk {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 5px; padding: 1.1rem 1.3rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+    .perk:hover { border-color: var(--accent); }
+    .perk-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+    .perk h4   { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .perk p    { color: var(--muted); font-size: 0.83rem; line-height: 1.5; }
+
+    .amount-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem; margin-bottom: 1.4rem;
+    }
+    .amt-btn {
+      padding: 0.85rem; border-radius: 3px;
+      border: 1px solid var(--border); background: var(--card);
+      color: var(--white); font-size: 1.05rem; font-weight: 900;
+      cursor: pointer; transition: all 0.18s;
+    }
+    .amt-btn:hover, .amt-btn.sel {
+      border-color: var(--accent);
+      background: rgba(230,57,70,0.1);
+      color: var(--accent);
+    }
+
+    .form-stack { display: flex; flex-direction: column; gap: 1rem; }
+    .form-stack label {
+      display: block; font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 5px;
+    }
+    .form-stack input, .form-stack textarea {
+      width: 100%; padding: 0.75rem 1rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 3px; color: var(--white);
+      font-size: 0.95rem; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+    }
+    .form-stack input:focus, .form-stack textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(230,57,70,0.1);
+    }
+    .form-stack textarea { resize: vertical; min-height: 110px; }
+    .half-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .form-note {
+      color: var(--muted); font-size: 0.74rem;
+      text-align: center; margin-top: 0.4rem;
+    }
+
+    /* ─────────── PAGE 4 — CONTACT ─────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 4rem; align-items: start;
+    }
+
+    .info-block { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem; }
+    .info-item  { display: flex; gap: 1rem; align-items: flex-start; }
+    .info-icon  { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .info-item strong { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+    .info-item span   { color: var(--text); font-size: 0.95rem; line-height: 1.6; }
+
+    .socials { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .social-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1rem; border-radius: 3px;
+      border: 1px solid var(--border); color: var(--muted);
+      text-decoration: none; font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      transition: all 0.2s;
+    }
+    .social-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─────────── PAGE 5 — EXTRA ─────────── */
+    .text-box-wrap { max-width: 680px; }
+    .text-box-wrap textarea {
+      width: 100%; min-height: 320px;
+      padding: 1.2rem 1.4rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 5px; color: var(--white);
+      font-size: 1rem; font-family: inherit; line-height: 1.7;
+      resize: vertical; outline: none;
+      transition: border-color 0.2s;
+    }
+    .text-box-wrap textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(230,57,70,0.1);
+    }
+    .text-box-wrap p {
+      color: var(--muted); font-size: 0.82rem;
+      margin-top: 0.6rem;
+    }
+
+    /* ─────────── FOOTER ─────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 1.75rem 2rem;
+      color: var(--muted); font-size: 0.84rem;
+    }
+    footer strong { color: var(--white); }
+
+    /* ─────────── RESPONSIVE ─────────── */
+    @media (max-width: 700px) {
+      .hamburger { display: flex; }
+      .nav-links  { display: none; }
+
+      .donate-grid,
+      .contact-grid  { grid-template-columns: 1fr; gap: 2rem; }
+
+      .event-row { grid-template-columns: 56px 1fr; }
+      .event-action { display: none; }
+
+      .amount-row  { grid-template-columns: repeat(3, 1fr); }
+      .half-row    { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="logo" onclick="go('home')" style="cursor:pointer">SPHS<span>Band</span></div>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="go('home',   this)">Home</a></li>
+    <li><a href="#"               onclick="go('events',  this)">Events</a></li>
+    <li><a href="#"               onclick="go('donate',  this)">Donate</a></li>
+    <li><a href="#"               onclick="go('contact', this)">Contact</a></li>
+    <li><a href="#"               onclick="go('extra',   this)">More</a></li>
+  </ul>
+  <button class="hamburger" id="burger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" class="active" onclick="go('home',   this); closeMenu()">Home</a>
+  <a href="#"               onclick="go('events',  this); closeMenu()">Events</a>
+  <a href="#"               onclick="go('donate',  this); closeMenu()">Donate</a>
+  <a href="#"               onclick="go('contact', this); closeMenu()">Contact</a>
+  <a href="#"               onclick="go('extra',   this); closeMenu()">More</a>
+</div>
+
+
+<!-- ══════════ PAGE 1 — HOME ══════════ -->
+<div id="home" class="page active">
+  <div class="hero">
+    <div class="hero-badge">Gaston county</div>
+    <h1>SPHS<span>Band</span></h1>
+    <p>Description.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn btn-solid"   onclick="go('events')">Upcoming Events</a>
+      <a href="#" class="btn btn-outline" onclick="go('donate')">Support Us</a>
+      <a href="#" class="btn btn-outline" onclick="go('contact')">Get in Touch</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ PAGE 2 — EVENTS ══════════ -->
+<div id="events" class="page">
+  <div class="inner">
+    <div class="wrap">
+      <div class="eyebrow">Concerts / Shows and competitions</div>
+      <h2 class="page-title">Upcoming Events</h2>
+      <p class="page-lead">This is our upcoming events</p>
+
+      <div class="events-list">
+
+        <div class="event-row">
+          <div class="event-date"><div class="day">14</div><div class="mon">Jun</div></div>
+          <div class="event-info">
+            <h3>Event Name Here</h3>
+            <p>Location</p>
+            <div class="time">open time · show time</div>
+          </div>
+        </div>
+
+        <div class="event-row">
+          <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+          <div class="event-info">
+            <h3>Event Name Here</h3>
+            <p>Location</p>
+            <div class="time">open time · show time</div>
+          </div>
+        </div>
+
+        <div class="event-row">
+          <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+          <div class="event-info">
+            <h3>Event Name Here</h3>
+            <p>Location</p>
+            <div class="time">open time · show time</div>
+          </div>
+        </div>
+
+       <div class="event-row">
+          <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+          <div class="event-info">
+            <h3>Event Name Here</h3>
+            <p>Location</p>
+            <div class="time">open time · show time</div>
+          </div>
+        </div>
+
+        <div class="event-row">
+          <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+          <div class="event-info">
+            <h3>Event Name Here</h3>
+            <p>Location</p>
+            <div class="time">open time · show time</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ PAGE 3 — DONATE ══════════ -->
+<div id="donate" class="page">
+  <div class="inner">
+    <div class="wrap">
+
+      <div class="donate-grid">
+
+        <!-- Left: all text -->
+        <div class="donate-blurb">
+          <div class="eyebrow">Support Us</div>
+          <h2 class="page-title">Make a Donation</h2>
+          <p>We're an independent band. Every dollar goes directly toward new equipment, recording costs, and keeping the music going. We appreciate anything you can give.</p>
+          <h3 style="margin-top:2rem">Why donate?</h3>
+          <p>We're a high school band working hard to grow. Every dollar you give goes directly toward what we need most:</p>
+          <ul>
+            <li>New instruments and equipment</li>
+            <li>Recording and production costs</li>
+            <li>Venue fees and event costs</li>
+            <li>Keeping the music going</li>
+          </ul>
+          <p style="margin-top:1.2rem">No amount is too small — we appreciate every bit of support from our community.</p>
+        </div>
+
+        <!-- Right: form -->
+        <div class="donate-card">
+          <div class="eyebrow" style="margin-bottom:1rem">Choose an amount</div>
+          <div class="amount-row">
+            <button class="amt-btn" onclick="pickAmt(this, 5)">$5</button>
+            <button class="amt-btn" onclick="pickAmt(this, 10)">$10</button>
+            <button class="amt-btn" onclick="pickAmt(this, 25)">$25</button>
+            <button class="amt-btn" onclick="pickAmt(this, 50)">$50</button>
+            <button class="amt-btn" onclick="pickAmt(this, 100)">$100</button>
+            <button class="amt-btn" onclick="pickAmt(this, null)">Other</button>
+          </div>
+
+          <div class="form-stack" onsubmit="submitDonate(event)">
+            <div>
+              <label>Custom amount (USD)</label>
+              <input type="number" id="customAmt" placeholder="Enter any amount" min="1" />
+            </div>
+            <div>
+              <label>Full name</label>
+              <input type="text" placeholder="Jane Smith" />
+            </div>
+            <div>
+              <label>Email</label>
+              <input type="email" placeholder="jane@email.com" />
+            </div>
+            <div>
+              <label>Card number</label>
+              <input type="text" placeholder="•••• •••• •••• ••••" maxlength="19" />
+            </div>
+            <div class="half-row">
+              <div>
+                <label>Expiry</label>
+                <input type="text" placeholder="MM / YY" maxlength="7" />
+              </div>
+              <div>
+                <label>CVV</label>
+                <input type="text" placeholder="•••" maxlength="4" />
+              </div>
+            </div>
+            <button type="button" class="btn btn-solid" style="width:100%;padding:1rem" onclick="submitDonate()">
+              Donate Now
+            </button>
+            <p class="form-note">This page does not work, dont put in any information!</p>
+          </div>
+        </div>
+
+      </div><!-- end donate-grid -->
+    </div>
+  </div>
+  <footer><strong>Band Name</strong> &copy; 2026. All rights reserved.</footer>
+</div>
+
+
+<!-- ══════════ PAGE 4 — CONTACT ══════════ -->
+<div id="contact" class="page">
+  <div class="inner">
+    <div class="wrap">
+      <div class="eyebrow">Get in Touch</div>
+      <h2 class="page-title">Contact & Info</h2>
+      <p class="page-lead">Want to get in touch? Fill out the form or reach us directly through any of the channels below.</p>
+
+      <div class="contact-grid">
+
+        <!-- Left: info -->
+        <div>
+          <div class="info-block">
+            <div class="info-item">
+              <div class="info-icon">📍</div>
+              <div>
+                <strong>Based in</strong>
+                <span>Your City, State</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">✉️</div>
+              <div>
+                <strong>Email</strong>
+                <span>youremail@email.com</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">📞</div>
+              <div>
+                <strong>Phone / Text</strong>
+                <span>(555) 000-0000</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">🎤</div>
+              <div>
+                <strong>School Email</strong>
+                <span>school@email.com</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="eyebrow" style="margin-bottom:0.75rem">Follow us</div>
+          <div class="socials">
+            <a href="#" class="social-link">📸 Instagram</a>
+            <a href="#" class="social-link">🎵 TikTok</a>
+            <a href="#" class="social-link">▶ YouTube</a>
+          </div>
+        </div>
+
+        <!-- Right: form -->
+        <div>
+          <form class="form-stack" onsubmit="submitContact(event)">
+            <div>
+              <label>Your name</label>
+              <input type="text" placeholder="Jane Smith" />
+            </div>
+            <div>
+              <label>Email</label>
+              <input type="email" placeholder="jane@email.com" />
+            </div>
+            <div>
+              <label>Subject</label>
+              <input type="text" placeholder="Booking inquiry, collab, just saying hi…" />
+            </div>
+            <div>
+              <label>Message</label>
+              <textarea placeholder="Write your message here…"></textarea>
+            </div>
+            <button type="submit" class="btn btn-solid" style="width:100%;padding:1rem">
+              Send Message
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ PAGE 5 — EXTRA ══════════ -->
+<div id="extra" class="page">
+  <div class="inner">
+    <div class="wrap">
+      <div class="eyebrow">Extra Page</div>
+      <h2 class="page-title">More</h2>
+      <p class="page-lead">This is an extra page that we can use for random stuff idk</p>
+
+      <div class="text-box-wrap">
+        <textarea placeholder="Write whatever you want here — a band bio, press info, lyrics, a message to fans, anything at all."></textarea>
+        <p>This text box is fully editable. Type directly in it, or replace it with any content you like.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  /* ── navigation ── */
+  function go(pageId, link) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+
+    document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(a => a.classList.remove('active'));
+    if (link) {
+      const txt = link.textContent.trim();
+      document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(a => {
+        if (a.textContent.trim() === txt) a.classList.add('active');
+      });
+    }
+    window.scrollTo(0, 0);
+    return false;
+  }
+
+  /* ── hamburger ── */
+  document.getElementById('burger').addEventListener('click', function () {
+    this.classList.toggle('open');
+    document.getElementById('mobileMenu').classList.toggle('open');
+  });
+  function closeMenu() {
+    document.getElementById('burger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  /* ── donation amount picker ── */
+  let chosenAmt = null;
+  function pickAmt(btn, val) {
+    document.querySelectorAll('.amt-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    chosenAmt = val;
+    document.getElementById('customAmt').value = '';
+  }
+
+  function submitDonate() {
+    const custom = document.getElementById('customAmt').value;
+    const amt = custom || chosenAmt;
+    if (!amt) { alert('Please select or enter a donation amount.'); return; }
+    alert('Thank you so much for your $' + amt + ' donation! It means a lot to us. 🙏');
+    document.querySelectorAll('.amt-btn').forEach(b => b.classList.remove('sel'));
+    document.getElementById('customAmt').value = '';
+    chosenAmt = null;
+  }
+
+  /* ── contact form ── */
+  function submitContact(e) {
+    e.preventDefault();
+    alert('Message sent! We\'ll get back to you soon.');
+    e.target.reset();
+  }
+</script>
+</body>
+</html>
