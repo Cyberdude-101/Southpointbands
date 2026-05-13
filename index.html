@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Band Name</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -138,6 +139,126 @@
     }
     .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
+    /* ─────────── LOGO SLOT ─────────── */
+    .logo-slot {
+      width: 120px; height: 120px; border-radius: 50%;
+      overflow: hidden; border: 2px solid var(--border);
+      background: var(--card);
+    }
+    .logo-slot img { width: 100%; height: 100%; object-fit: cover; }
+    .logo-fallback {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 100%; height: 100%; gap: 0.4rem;
+      border: 2px dashed var(--border); border-radius: 50%;
+    }
+    .logo-fallback span { font-size: 2rem; }
+    .logo-fallback p { font-size: 0.55rem; color: var(--muted); text-align: center; line-height: 1.4; }
+
+    /* ─────────── PHOTOS SECTION ─────────── */
+    .photos-section { padding: 4rem 2rem 5rem; background: var(--surface); }
+    .photos-title {
+      font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -1px; margin-bottom: 2rem;
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: 260px 180px;
+      gap: 1rem;
+    }
+    .photo-slot {
+      background: var(--card); border: 2px dashed var(--border);
+      border-radius: 6px; overflow: hidden; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s;
+    }
+    .photo-slot:hover { border-color: var(--accent); }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .photo-slot.large { grid-row: span 2; }
+    .photo-slot.wide  { grid-column: span 2; }
+    .photo-label {
+      color: var(--muted); font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase; text-align: center;
+      padding: 1rem; line-height: 1.6; z-index: 1;
+    }
+
+    @media (max-width: 600px) {
+      .photo-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .photo-slot, .photo-slot.large, .photo-slot.wide {
+        grid-row: auto; grid-column: auto; height: 200px;
+      }
+    }
+
+    /* ─────────── ABOUT PAGE ─────────── */
+    .about-bio {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3.5rem; align-items: center;
+    }
+    .about-bio-text h3 {
+      font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem;
+    }
+    .about-bio-text p {
+      color: var(--text); line-height: 1.85; margin-bottom: 1rem; font-size: 0.97rem;
+    }
+    .about-bio-img {
+      position: relative; height: 320px; border-radius: 8px;
+      overflow: hidden; background: var(--card);
+      border: 2px dashed var(--border);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .about-bio-img img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .about-img-placeholder { color: var(--muted); font-size: 1rem; font-weight: 600; letter-spacing: 1px; }
+
+    .group-photo-slot {
+      width: 100%; height: 340px; border-radius: 8px;
+      background: var(--card); border: 2px dashed var(--border);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
+    }
+    .group-photo-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+    .group-photo-label { color: var(--muted); font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; z-index: 1; }
+
+    .sections-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+    .section-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .section-card:hover { border-color: var(--accent); }
+    .section-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .section-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .section-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+    .director-block {
+      padding: 2rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent); border-radius: 6px;
+    }
+    .director-inner {
+      display: grid; grid-template-columns: 1fr 220px;
+      gap: 2.5rem; align-items: center;
+    }
+    .director-block h3 { font-size: 1.2rem; font-weight: 700; margin: 0.4rem 0 0.75rem; }
+    .director-block p { color: var(--text); font-size: 0.95rem; line-height: 1.8; }
+    .director-inner .about-bio-img { height: 220px; border-radius: 6px; }
+
+    @media (max-width: 700px) {
+      .director-inner { grid-template-columns: 1fr; }
+      .director-inner .about-bio-img { height: 180px; }
+    }
+
+    @media (max-width: 700px) {
+      .about-bio { grid-template-columns: 1fr; gap: 2rem; }
+      .about-bio-img { height: 220px; }
+    }
+
     /* ─────────── INNER PAGE SHELL ─────────── */
     .inner { padding: 4.5rem 2rem 5rem; }
     .wrap  { max-width: 960px; margin: 0 auto; }
@@ -247,20 +368,23 @@
     .perk h4   { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
     .perk p    { color: var(--muted); font-size: 0.83rem; line-height: 1.5; }
 
-    .amount-row {
+    .donate-btn-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem; margin-bottom: 1.4rem;
+      gap: 0.75rem;
     }
-    .amt-btn {
-      padding: 0.85rem; border-radius: 3px;
+    .donate-amt-btn {
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.1rem 0.5rem; border-radius: 5px;
       border: 1px solid var(--border); background: var(--card);
-      color: var(--white); font-size: 1.05rem; font-weight: 900;
-      cursor: pointer; transition: all 0.18s;
+      color: var(--white); font-size: 1.2rem; font-weight: 900;
+      text-decoration: none; transition: all 0.18s; cursor: pointer;
     }
-    .amt-btn:hover, .amt-btn.sel {
+    .donate-amt-btn:hover {
       border-color: var(--accent);
-      background: rgba(230,57,70,0.1);
+      background: rgba(247,25,25,0.12);
       color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(247,25,25,0.2);
     }
 
     .form-stack { display: flex; flex-direction: column; gap: 1rem; }
@@ -340,6 +464,32 @@
     }
     footer strong { color: var(--white); }
 
+    /* ─────────── ADMIN EDIT MODE ─────────── */
+    .admin-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+      background: #111; border-top: 2px solid var(--accent);
+      display: none; align-items: center; justify-content: space-between;
+      padding: 0.7rem 2rem; gap: 1rem;
+    }
+    .admin-bar.visible { display: flex; }
+    .admin-bar-info { font-size: 0.72rem; color: var(--muted); letter-spacing: 1px; }
+    .admin-bar-info strong { color: var(--white); }
+    .admin-bar-btns { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .admin-btn {
+      padding: 0.4rem 1rem; border-radius: 3px; font-size: 0.7rem;
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      cursor: pointer; border: 1px solid var(--border); background: var(--card);
+      color: var(--white); transition: all 0.2s;
+    }
+    .admin-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .admin-btn.save-btn { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .admin-btn.save-btn:hover { background: #c1121f; }
+    .edit-mode [data-editable] {
+      outline: 1px dashed rgba(247,25,25,0.5);
+      outline-offset: 3px; border-radius: 2px; cursor: text;
+    }
+    [data-editable]:focus { outline: 2px solid var(--accent) !important; outline-offset: 3px; }
+
     /* ─────────── RESPONSIVE ─────────── */
     @media (max-width: 700px) {
       .hamburger { display: flex; }
@@ -355,7 +505,6 @@
       .half-row    { grid-template-columns: 1fr; }
     }
   </style>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 
@@ -367,7 +516,7 @@
     <li><a href="#"               onclick="go('events',  this)">Events</a></li>
     <li><a href="#"               onclick="go('donate',  this)">Donate</a></li>
     <li><a href="#"               onclick="go('contact', this)">Contact</a></li>
-    <li><a href="#"               onclick="go('extra',   this)">More</a></li>
+    <li><a href="#"               onclick="go('extra',   this)">About</a></li>
   </ul>
   <button class="hamburger" id="burger" aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -379,14 +528,26 @@
   <a href="#"               onclick="go('events',  this); closeMenu()">Events</a>
   <a href="#"               onclick="go('donate',  this); closeMenu()">Donate</a>
   <a href="#"               onclick="go('contact', this); closeMenu()">Contact</a>
-  <a href="#"               onclick="go('extra',   this); closeMenu()">More</a>
+  <a href="#"               onclick="go('extra',   this); closeMenu()">About</a>
 </div>
 
 
 <!-- ══════════ PAGE 1 — HOME ══════════ -->
 <div id="home" class="page active">
+
+  <!-- Hero -->
   <div class="hero">
-    <div class="hero-badge">Gaston county</div>
+    <div class="hero-badge">Gaston County</div>
+
+    <!-- Logo slot: replace src="" with your logo file path -->
+    <div class="logo-slot">
+      <img src="" alt="Band Logo" id="logoImg" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'" />
+      <div id="logoFallback" class="logo-fallback">
+        <span>🎵</span>
+        <p>Drop the logo here<br><small>Replace src="" in the code with the image path</small></p>
+      </div>
+    </div>
+
     <h1>SPHS<span>Band</span></h1>
     <p>Description.</p>
     <div class="hero-btns">
@@ -395,6 +556,34 @@
       <a href="#" class="btn btn-outline" onclick="go('contact')">Get in Touch</a>
     </div>
   </div>
+
+  <!-- Photos section -->
+  <div class="photos-section">
+    <div class="wrap">
+      <div class="eyebrow">The Band</div>
+      <h2 class="photos-title">Photos</h2>
+      <!-- Asymmetric grid: 1 large left, 2 stacked right, 1 wide bottom -->
+      <div class="photo-grid">
+        <div class="photo-slot large">
+          <img src="" alt="Band Photo 1" onerror="this.style.display='none'" />
+          <div class="photo-label">Photo 1 — replace src="" with image</div>
+        </div>
+        <div class="photo-slot">
+          <img src="" alt="Band Photo 2" onerror="this.style.display='none'" />
+          <div class="photo-label">Photo 2</div>
+        </div>
+        <div class="photo-slot">
+          <img src="" alt="Band Photo 3" onerror="this.style.display='none'" />
+          <div class="photo-label">Photo 3</div>
+        </div>
+        <div class="photo-slot wide">
+          <img src="" alt="Band Photo 4" onerror="this.style.display='none'" />
+          <div class="photo-label">Photo 4 — wide banner shot</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 
@@ -475,63 +664,33 @@
           <p>We're a high school band working hard to grow. Every dollar you give goes directly toward what we need most:</p>
           <ul>
             <li>New instruments and equipment</li>
-            <li>Recording and production costs</li>
-            <li>Venue fees and event costs</li>
-            <li>Keeping the music going</li>
+            <li>Travel Costs</li>
+            <li>Instrument Maintenance</li>
+            <li>Competition fees</li>
           </ul>
           <p style="margin-top:1.2rem">No amount is too small — we appreciate every bit of support from our community.</p>
         </div>
 
-        <!-- Right: form -->
+        <!-- Right: donation buttons -->
         <div class="donate-card">
-          <div class="eyebrow" style="margin-bottom:1rem">Choose an amount</div>
-          <div class="amount-row">
-            <button class="amt-btn" onclick="pickAmt(this, 5)">$5</button>
-            <button class="amt-btn" onclick="pickAmt(this, 10)">$10</button>
-            <button class="amt-btn" onclick="pickAmt(this, 25)">$25</button>
-            <button class="amt-btn" onclick="pickAmt(this, 50)">$50</button>
-            <button class="amt-btn" onclick="pickAmt(this, 100)">$100</button>
-            <button class="amt-btn" onclick="pickAmt(this, null)">Other</button>
+          <div class="eyebrow" style="margin-bottom:0.5rem">Choose an amount</div>
+          <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1.5rem">You'll be taken to our fundraising page to complete your donation securely.</p>
+          <div class="donate-btn-grid">
+            <a href="#" class="donate-amt-btn">$1</a>
+            <a href="#" class="donate-amt-btn">$5</a>
+            <a href="#" class="donate-amt-btn">$10</a>
+            <a href="#" class="donate-amt-btn">$20</a>
+            <a href="#" class="donate-amt-btn">$50</a>
+            <a href="#" class="donate-amt-btn">$100</a>
           </div>
-
-          <div class="form-stack" onsubmit="submitDonate(event)">
-            <div>
-              <label>Custom amount (USD)</label>
-              <input type="number" id="customAmt" placeholder="Enter any amount" min="1" />
-            </div>
-            <div>
-              <label>Full name</label>
-              <input type="text" placeholder="Jane Smith" />
-            </div>
-            <div>
-              <label>Email</label>
-              <input type="email" placeholder="jane@email.com" />
-            </div>
-            <div>
-              <label>Card number</label>
-              <input type="text" placeholder="•••• •••• •••• ••••" maxlength="19" />
-            </div>
-            <div class="half-row">
-              <div>
-                <label>Expiry</label>
-                <input type="text" placeholder="MM / YY" maxlength="7" />
-              </div>
-              <div>
-                <label>CVV</label>
-                <input type="text" placeholder="•••" maxlength="4" />
-              </div>
-            </div>
-            <button type="button" class="btn btn-solid" style="width:100%;padding:1rem" onclick="submitDonate()">
-              Donate Now
-            </button>
-            <p class="form-note">This page does not work, dont put in any information!</p>
-          </div>
+          <p style="color:var(--muted);font-size:0.78rem;text-align:center;margin-top:1.5rem;line-height:1.6">
+            Clicking a button will open our fundraising page.<br>We do not collect any payment information on this site.
+          </p>
         </div>
 
       </div><!-- end donate-grid -->
     </div>
   </div>
-  <footer><strong>Band Name</strong> &copy; 2026. All rights reserved.</footer>
 </div>
 
 
@@ -539,14 +698,14 @@
 <div id="contact" class="page">
   <div class="inner">
     <div class="wrap">
-      <div class="eyebrow">Get in Touch</div>
-      <h2 class="page-title">Contact & Info</h2>
-      <p class="page-lead">Want to get in touch? Fill out the form or reach us directly through any of the channels below.</p>
 
       <div class="contact-grid">
 
-        <!-- Left: info -->
+        <!-- Left: title + info -->
         <div>
+          <div class="eyebrow">Get in Touch</div>
+          <h2 class="page-title">Contact & Info</h2>
+          <p style="color:var(--text);font-size:1rem;line-height:1.75;margin-bottom:2rem">Want to get in touch? Reach us directly through any of the channels below or fill out the form.</p>
           <div class="info-block">
             <div class="info-item">
               <div class="info-icon">📍</div>
@@ -617,22 +776,64 @@
 </div>
 
 
-<!-- ══════════ PAGE 5 — EXTRA ══════════ -->
+<!-- ══════════ PAGE 5 — ABOUT ══════════ -->
 <div id="extra" class="page">
   <div class="inner">
     <div class="wrap">
-      <div class="eyebrow">Extra Page</div>
-      <h2 class="page-title">More</h2>
-      <p class="page-lead">This is an extra page that we can use for random stuff idk</p>
+      <div class="eyebrow">Who We Are</div>
+      <h2 class="page-title">About Us</h2>
+      <p class="page-lead">Write about band</p>
 
-      <div class="text-box-wrap">
-        <textarea placeholder="Write whatever you want here — a band bio, press info, lyrics, a message to fans, anything at all."></textarea>
-        <p>This text box is fully editable. Type directly in it, or replace it with any content you like.</p>
+      <!-- Bio section -->
+      <div class="about-bio">
+        <div class="about-bio-text">
+          <h3>Our Story</h3>
+          <p>More about band</p>
+          <p>And guess what... More about band!!!</p>
+        </div>
       </div>
+
+      <!-- Group photo -->
+      <div class="group-photo-slot" style="margin-top:3.5rem">
+        <img src="" alt="Full Band Photo" onerror="this.style.display='none'" />
+        <div class="group-photo-label">Full Band Photo — replace src="" with image</div>
+      </div>
+
+      <!-- Director -->
+      <div class="director-block" style="margin-top:3.5rem">
+        <div class="director-inner">
+          <div class="director-info">
+            <div class="eyebrow">Band Director</div>
+            <h3>Settleslayer</h3>
+            <p>Write about Chef</p>
+          </div>
+          <div class="about-bio-img">
+            <img src="" alt="Director Photo" onerror="this.style.display='none'" />
+            <div class="about-img-placeholder">📸 Director Photo</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
 
+
+<!-- ══════════ ADMIN BAR ══════════ -->
+<div id="adminBar" class="admin-bar">
+  <div class="admin-bar-info">Logged in as <strong id="adminEmail"></strong></div>
+  <div class="admin-bar-btns">
+    <button id="editBtn" class="admin-btn" onclick="toggleEditMode()">Edit Mode</button>
+    <button id="saveBtn" class="admin-btn save-btn" onclick="saveChanges()" style="display:none">Save Changes</button>
+    <button id="cancelBtn" class="admin-btn" onclick="disableEditMode()" style="display:none">Cancel</button>
+    <button class="admin-btn" onclick="netlifyIdentity.logout()">Log Out</button>
+  </div>
+</div>
+
+<footer style="background:var(--surface);border-top:1px solid var(--border);text-align:center;padding:1.75rem 2rem;color:var(--muted);font-size:0.84rem;">
+  <strong style="color:var(--white)">SPHS Band</strong> &nbsp;·&nbsp; South Point High School, Gaston County
+  &nbsp;&nbsp;<a href="#" onclick="netlifyIdentity.open();return false;" style="color:var(--border);font-size:0.68rem;text-decoration:none;margin-left:1.5rem">Admin</a>
+</footer>
 
 <script>
   /* ── navigation ── */
@@ -686,16 +887,110 @@
     alert('Message sent! We\'ll get back to you soon.');
     e.target.reset();
   }
-</script>
-  <script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
+
+  /* ── inline editing ── */
+  const EDITABLE = [
+    '.hero-badge', '.hero > p', '.page-lead',
+    '.event-info h3', '.event-info p', '.event-info .time',
+    '.event-date .day', '.event-date .mon',
+    '.donate-blurb p', '.donate-blurb h3', '.donate-blurb li',
+    '.info-item span',
+    '.about-bio-text h3', '.about-bio-text p',
+    '.director-info h3', '.director-info p'
+  ];
+
+  let editMode = false;
+
+  function toggleEditMode() { editMode ? disableEditMode() : enableEditMode(); }
+
+  function enableEditMode() {
+    editMode = true;
+    document.body.classList.add('edit-mode');
+    EDITABLE.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        el.setAttribute('contenteditable', 'true');
+        el.setAttribute('data-editable', '');
+      });
     });
+    document.getElementById('editBtn').textContent = 'Editing ON';
+    document.getElementById('saveBtn').style.display = 'inline-block';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+  }
+
+  function disableEditMode() {
+    editMode = false;
+    document.body.classList.remove('edit-mode');
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      el.removeAttribute('data-editable');
+    });
+    document.getElementById('editBtn').textContent = 'Edit Mode';
+    document.getElementById('saveBtn').style.display = 'none';
+    document.getElementById('cancelBtn').style.display = 'none';
+  }
+
+  async function saveChanges() {
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+    try {
+      // Strip edit state for clean HTML snapshot
+      document.body.classList.remove('edit-mode');
+      document.getElementById('adminBar').classList.remove('visible');
+      document.querySelectorAll('[data-editable]').forEach(el => {
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('data-editable');
+      });
+
+      const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+      // Restore edit state
+      document.body.classList.add('edit-mode');
+      document.getElementById('adminBar').classList.add('visible');
+      EDITABLE.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => {
+          el.setAttribute('contenteditable', 'true');
+          el.setAttribute('data-editable', '');
+        });
+      });
+
+      const token = netlifyIdentity.currentUser().token.access_token;
+      const getResp = await fetch('/.netlify/git/github/contents/index.html', {
+        headers: { Authorization: 'Bearer ' + token }
+      });
+      if (!getResp.ok) throw new Error('Could not read current file from GitHub');
+      const fileData = await getResp.json();
+
+      const encoded = btoa(unescape(encodeURIComponent(html)));
+      const putResp = await fetch('/.netlify/git/github/contents/index.html', {
+        method: 'PUT',
+        headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Update site content', content: encoded, sha: fileData.sha })
+      });
+      if (!putResp.ok) throw new Error('GitHub rejected the save — check Git Gateway is enabled');
+      alert('Saved! Changes will go live in about 30 seconds.');
+      disableEditMode();
+    } catch (err) {
+      alert('Error: ' + err.message);
+    } finally {
+      saveBtn.textContent = 'Save Changes';
+      saveBtn.disabled = false;
+    }
+  }
+
+  /* ── netlify identity ── */
+  if (window.netlifyIdentity) {
+    netlifyIdentity.on('init', user => { if (user) showAdminBar(user); });
+    netlifyIdentity.on('login', user => { netlifyIdentity.close(); showAdminBar(user); });
+    netlifyIdentity.on('logout', () => {
+      disableEditMode();
+      document.getElementById('adminBar').classList.remove('visible');
+    });
+  }
+
+  function showAdminBar(user) {
+    document.getElementById('adminBar').classList.add('visible');
+    document.getElementById('adminEmail').textContent = user.email;
   }
 </script>
 </body>
