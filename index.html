@@ -1003,52 +1003,48 @@
     if (idx >= 0) pendingImages.splice(idx, 1);
   }
 
-  /* ── get auth token (loads widget if needed) ── */
-  async function getToken() {
-    if (!window.netlifyIdentity) {
-      await new Promise((res, rej) => {
-        const timer = setTimeout(() => rej(new Error('Login timed out — click Admin to log in')), 10000);
-        const s = document.createElement('script');
-        s.onerror = () => { clearTimeout(timer); rej(new Error('Could not load login system')); };
-        s.onload = () => {
-          netlifyIdentity.on('login', u => showAdminBar(u));
-          netlifyIdentity.on('logout', doLogout);
-          netlifyIdentity.on('init', () => { clearTimeout(timer); res(); });
-        };
-        s.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-        document.head.appendChild(s);
-      });
+  /* ── get auth token directly from localStorage (no network call) ── */
+  function getToken() {
+    try {
+      const raw = localStorage.getItem('gotrue.user');
+      if (!raw) throw new Error('Not logged in — click Admin in the footer');
+      const user = JSON.parse(raw);
+      const token = user && user.token && user.token.access_token;
+      if (!token) throw new Error('No token found — please log out and log in again');
+      return token;
+    } catch(e) {
+      throw new Error(e.message || 'Login error — please log in again');
     }
-    if (!netlifyIdentity.currentUser()) throw new Error('Please click Admin in the footer and log in again');
-    return await Promise.race([
-      netlifyIdentity.currentUser().jwt(),
-      new Promise((_, rej) => setTimeout(() => rej(new Error('Token timed out — please log out and log in again')), 8000))
-    ]);
   }
 
   /* ── save changes ── */
   async function saveChanges() {
     const saveBtn = document.getElementById('saveBtn');
-    saveBtn.textContent = 'Saving...';
     saveBtn.disabled = true;
     try {
-      const token = await getToken();
+      saveBtn.textContent = 'Getting token...';
+      const token = getToken();
 
       /* upload any dropped images first */
+      if (pendingImages.length) saveBtn.textContent = 'Uploading images...';
       for (const pending of pendingImages) {
         const base64 = pending.dataUrl.split(',')[1];
         const ext = pending.file.name.split('.').pop().toLowerCase();
         const filename = 'images/' + Date.now() + '.' + ext;
+        const ctrl0 = new AbortController();
+        setTimeout(() => ctrl0.abort(), 15000);
         await fetch('/.netlify/git/github/contents/' + filename, {
           method: 'PUT',
           headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'Upload image', content: base64 })
+          body: JSON.stringify({ message: 'Upload image', content: base64 }),
+          signal: ctrl0.signal
         });
         pending.img.src = filename;
       }
       pendingImages.length = 0;
 
       /* snapshot clean HTML */
+      saveBtn.textContent = 'Building snapshot...';
       document.body.classList.remove('edit-mode');
       document.getElementById('adminBar').classList.remove('visible');
       document.querySelectorAll('[data-editable]').forEach(el => {
@@ -1065,6 +1061,7 @@
         });
       });
 
+      saveBtn.textContent = 'Reading from GitHub...';
       const ctrl1 = new AbortController();
       const t1 = setTimeout(() => ctrl1.abort(), 12000);
       const getResp = await fetch('/.netlify/git/github/contents/index.html', {
@@ -1074,6 +1071,7 @@
       if (!getResp.ok) throw new Error('Could not read file from GitHub (' + getResp.status + ')');
       const fileData = await getResp.json();
 
+      saveBtn.textContent = 'Writing to GitHub...';
       const encoded = btoa(unescape(encodeURIComponent(html)));
       const ctrl2 = new AbortController();
       const t2 = setTimeout(() => ctrl2.abort(), 12000);
