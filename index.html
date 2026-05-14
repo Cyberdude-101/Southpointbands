@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Band Name</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -503,6 +504,89 @@
     .img-remove-btn:hover { background: var(--accent); }
     .edit-mode .img-remove-btn { display: block; }
 
+    /* ─────────── EVENT EDITING ─────────── */
+    .event-delete-btn {
+      display: none; width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(247,25,25,0.12); border: 1px solid rgba(247,25,25,0.35);
+      color: var(--accent); font-size: 1rem; line-height: 1;
+      cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+      align-items: center; justify-content: center;
+    }
+    .event-delete-btn:hover { background: var(--accent); color: #fff; }
+
+    .add-event-btn {
+      display: none; width: 100%; margin-top: 0.6rem;
+      padding: 0.75rem; background: none;
+      border: 1px dashed rgba(247,25,25,0.4); border-radius: 4px;
+      color: var(--accent); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .add-event-btn:hover { background: rgba(247,25,25,0.08); border-color: var(--accent); }
+
+    /* ─────────── CALENDAR VIEW ─────────── */
+    .events-view-toggle { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .view-btn {
+      padding: 0.42rem 1rem; border: 1px solid var(--border);
+      background: none; color: var(--muted); border-radius: 3px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+      font-family: inherit;
+    }
+    .view-btn.active, .view-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .view-btn.active { background: rgba(247,25,25,0.1); }
+
+    .cal-wrap { }
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .cal-nav {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      width: 32px; height: 32px; border-radius: 3px; font-size: 1.1rem;
+      cursor: pointer; transition: all 0.2s; display: flex;
+      align-items: center; justify-content: center; font-family: inherit;
+    }
+    .cal-nav:hover { border-color: var(--accent); color: var(--accent); }
+    .cal-month-title { font-size: 1rem; font-weight: 700; letter-spacing: 1px; }
+    .cal-days-hdr {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 2px; margin-bottom: 3px; text-align: center;
+    }
+    .cal-days-hdr span {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--muted); padding: 0.25rem 0;
+    }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .cal-cell {
+      aspect-ratio: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; border-radius: 4px;
+      font-size: 0.82rem; position: relative; transition: background 0.15s;
+      color: var(--text); cursor: default;
+    }
+    .cal-cell.empty { pointer-events: none; }
+    .cal-cell.today { background: var(--card); color: var(--white); font-weight: 700; }
+    .cal-cell.has-event { color: var(--white); font-weight: 700; cursor: pointer; }
+    .cal-cell.has-event::after {
+      content: ''; position: absolute; bottom: 4px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+    }
+    .cal-cell.has-event:hover { background: rgba(247,25,25,0.18); }
+    .cal-cell.selected { background: rgba(247,25,25,0.22) !important; }
+    .cal-event-detail {
+      margin-top: 1.1rem; border-top: 1px solid var(--border); padding-top: 0.8rem;
+    }
+    .cal-ev-item {
+      display: flex; align-items: center; gap: 0.9rem;
+      padding: 0.55rem 0; border-bottom: 1px solid var(--border);
+    }
+    .cal-ev-day {
+      font-size: 1.5rem; font-weight: 900; color: var(--accent);
+      min-width: 2.2rem; text-align: center; line-height: 1;
+    }
+    .cal-ev-info strong { display: block; font-size: 0.95rem; }
+    .cal-ev-info span { font-size: 0.8rem; color: var(--muted); }
+
     /* ─────────── RESPONSIVE ─────────── */
     @media (max-width: 700px) {
       .hamburger { display: flex; }
@@ -518,18 +602,18 @@
       .half-row    { grid-template-columns: 1fr; }
     }
   </style>
-<style></style></head>
-<body data-new-gr-c-s-check-loaded="14.1290.0" data-gr-ext-installed="" class="" data-new-gr-c-s-loaded="14.1290.0">
+</head>
+<body>
 
 <!-- ══════════ NAV ══════════ -->
 <nav>
   <div class="logo" onclick="go('home')" style="cursor:pointer">SPHS<span>Band</span></div>
   <ul class="nav-links">
     <li><a href="#" class="active" onclick="go('home',   this)">Home</a></li>
-    <li><a href="#" onclick="go('events',  this)" class="">Events</a></li>
-    <li><a href="#" onclick="go('donate',  this)" class="">Donate</a></li>
-    <li><a href="#" onclick="go('contact', this)" class="">Contact</a></li>
-    <li><a href="#" onclick="go('extra',   this)" class="">About</a></li>
+    <li><a href="#"               onclick="go('events',  this)">Events</a></li>
+    <li><a href="#"               onclick="go('donate',  this)">Donate</a></li>
+    <li><a href="#"               onclick="go('contact', this)">Contact</a></li>
+    <li><a href="#"               onclick="go('extra',   this)">About</a></li>
   </ul>
   <button class="hamburger" id="burger" aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -538,10 +622,10 @@
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="#" class="active" onclick="go('home',   this); closeMenu()">Home</a>
-  <a href="#" onclick="go('events',  this); closeMenu()" class="">Events</a>
-  <a href="#" onclick="go('donate',  this); closeMenu()" class="">Donate</a>
-  <a href="#" onclick="go('contact', this); closeMenu()" class="">Contact</a>
-  <a href="#" onclick="go('extra',   this); closeMenu()" class="">About</a>
+  <a href="#"               onclick="go('events',  this); closeMenu()">Events</a>
+  <a href="#"               onclick="go('donate',  this); closeMenu()">Donate</a>
+  <a href="#"               onclick="go('contact', this); closeMenu()">Contact</a>
+  <a href="#"               onclick="go('extra',   this); closeMenu()">About</a>
 </div>
 
 
@@ -553,19 +637,19 @@
     <div class="hero-badge">Gaston County</div>
 
     <!-- Logo slot: replace src="" with your logo file path -->
-    <div class="logo-slot" title="Drag an image here to replace">
-      <img src="" alt="Band Logo" id="logoImg" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'" style="display: none;">
-      <div id="logoFallback" class="logo-fallback" style="display: flex;">
+    <div class="logo-slot">
+      <img src="" alt="Band Logo" id="logoImg" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'" />
+      <div id="logoFallback" class="logo-fallback">
         <span>🎵</span>
         <p>Drop the logo here<br><small>Replace src="" in the code with the image path</small></p>
       </div>
-      <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+      <div class="img-remove-btn" onclick="removeImage(this)">×</div>
     </div>
 
     <h1>SPHS<span>Band</span></h1>
-    <p>Description...</p>
+    <p>Description.</p>
     <div class="hero-btns">
-      <a href="#" class="btn btn-solid" onclick="go('events')">Upcoming Events</a>
+      <a href="#" class="btn btn-solid"   onclick="go('events')">Upcoming Events</a>
       <a href="#" class="btn btn-outline" onclick="go('donate')">Support Us</a>
       <a href="#" class="btn btn-outline" onclick="go('contact')">Get in Touch</a>
     </div>
@@ -578,25 +662,25 @@
       <h2 class="photos-title">Photos</h2>
       <!-- Asymmetric grid: 1 large left, 2 stacked right, 1 wide bottom -->
       <div class="photo-grid">
-        <div class="photo-slot large" title="Drag an image here to replace"><img alt="" src="images/1778720146376-0.jpg" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0px; display: block;">
-          
-          <div class="photo-label" style="display: none;">Photo 1 — replace src="" with image</div>
-          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+        <div class="photo-slot large">
+          <img src="" alt="Band Photo 1" onerror="this.style.display='none'" />
+          <div class="photo-label">Photo 1 — replace src="" with image</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
-        <div class="photo-slot" title="Drag an image here to replace">
-          <img src="" alt="Band Photo 2" onerror="this.style.display='none'" style="display: none;">
+        <div class="photo-slot">
+          <img src="" alt="Band Photo 2" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 2</div>
-          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
-        <div class="photo-slot" title="Drag an image here to replace">
-          <img src="" alt="Band Photo 3" onerror="this.style.display='none'" style="display: none;">
+        <div class="photo-slot">
+          <img src="" alt="Band Photo 3" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 3</div>
-          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
-        <div class="photo-slot wide" title="Drag an image here to replace">
-          <img src="" alt="Band Photo 4" onerror="this.style.display='none'" style="display: none;">
+        <div class="photo-slot wide">
+          <img src="" alt="Band Photo 4" onerror="this.style.display='none'" />
           <div class="photo-label">Photo 4 — wide banner shot</div>
-          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
         </div>
       </div>
     </div>
@@ -613,53 +697,82 @@
       <h2 class="page-title">Upcoming Events</h2>
       <p class="page-lead">This is our upcoming events</p>
 
-      <div class="events-list">
+      <!-- view toggle -->
+      <div class="events-view-toggle">
+        <button id="listViewBtn" class="view-btn active" onclick="showListView()">☰ List</button>
+        <button id="calViewBtn"  class="view-btn"        onclick="showCalView()">📅 Calendar</button>
+      </div>
 
-        <div class="event-row">
-          <div class="event-date"><div class="day">14</div><div class="mon">Jun</div></div>
-          <div class="event-info">
-            <h3>Event Name Here</h3>
-            <p>Location</p>
-            <div class="time">open time · show time</div>
+      <!-- list view -->
+      <div id="eventsListWrap">
+        <div class="events-list">
+
+          <div class="event-row">
+            <div class="event-date"><div class="day">14</div><div class="mon">Jun</div></div>
+            <div class="event-info">
+              <h3>Event Name Here</h3>
+              <p>Location</p>
+              <div class="time">open time · show time</div>
+            </div>
+            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
           </div>
-        </div>
 
-        <div class="event-row">
-          <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
-          <div class="event-info">
-            <h3>Event Name Here</h3>
-            <p>Location</p>
-            <div class="time">open time · show time</div>
+          <div class="event-row">
+            <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+            <div class="event-info">
+              <h3>Event Name Here</h3>
+              <p>Location</p>
+              <div class="time">open time · show time</div>
+            </div>
+            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
           </div>
-        </div>
 
-        <div class="event-row">
-          <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
-          <div class="event-info">
-            <h3>Event Name Here</h3>
-            <p>Location</p>
-            <div class="time">open time · show time</div>
+          <div class="event-row">
+            <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+            <div class="event-info">
+              <h3>Event Name Here</h3>
+              <p>Location</p>
+              <div class="time">open time · show time</div>
+            </div>
+            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
           </div>
-        </div>
 
-       <div class="event-row">
-          <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
-          <div class="event-info">
-            <h3>Event Name Here</h3>
-            <p>Location</p>
-            <div class="time">open time · show time</div>
+          <div class="event-row">
+            <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+            <div class="event-info">
+              <h3>Event Name Here</h3>
+              <p>Location</p>
+              <div class="time">open time · show time</div>
+            </div>
+            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
           </div>
-        </div>
 
-        <div class="event-row">
-          <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
-          <div class="event-info">
-            <h3>Event Name Here</h3>
-            <p>Location</p>
-            <div class="time">open time · show time</div>
+          <div class="event-row">
+            <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+            <div class="event-info">
+              <h3>Event Name Here</h3>
+              <p>Location</p>
+              <div class="time">open time · show time</div>
+            </div>
+            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
           </div>
-        </div>
 
+        </div>
+        <button id="addEventBtn" class="add-event-btn" onclick="addEvent()">+ Add Event</button>
+      </div>
+
+      <!-- calendar view (hidden by default) -->
+      <div id="calView" class="cal-wrap" style="display:none">
+        <div class="cal-header">
+          <button class="cal-nav" onclick="prevMonth()">&#8249;</button>
+          <span id="calMonthTitle" class="cal-month-title"></span>
+          <button class="cal-nav" onclick="nextMonth()">&#8250;</button>
+        </div>
+        <div class="cal-days-hdr">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div id="calGrid" class="cal-grid"></div>
+        <div id="calEventDetail" class="cal-event-detail" style="display:none"></div>
       </div>
     </div>
   </div>
@@ -722,7 +835,7 @@
         <!-- Left: title + info -->
         <div>
           <div class="eyebrow">Get in Touch</div>
-          <h2 class="page-title">Contact &amp; Info</h2>
+          <h2 class="page-title">Contact & Info</h2>
           <p style="color:var(--text);font-size:1rem;line-height:1.75;margin-bottom:2rem">Want to get in touch? Reach us directly through any of the channels below or fill out the form.</p>
           <div class="info-block">
             <div class="info-item">
@@ -768,15 +881,15 @@
           <form class="form-stack" onsubmit="submitContact(event)">
             <div>
               <label>Your name</label>
-              <input type="text" placeholder="Jane Smith">
+              <input type="text" placeholder="Jane Smith" />
             </div>
             <div>
               <label>Email</label>
-              <input type="email" placeholder="jane@email.com">
+              <input type="email" placeholder="jane@email.com" />
             </div>
             <div>
               <label>Subject</label>
-              <input type="text" placeholder="Booking inquiry, collab, just saying hi…">
+              <input type="text" placeholder="Booking inquiry, collab, just saying hi…" />
             </div>
             <div>
               <label>Message</label>
@@ -812,10 +925,10 @@
       </div>
 
       <!-- Group photo -->
-      <div class="group-photo-slot" style="margin-top:3.5rem" title="Drag an image here to replace">
-        <img src="" alt="Full Band Photo" onerror="this.style.display='none'" style="display: none;">
+      <div class="group-photo-slot" style="margin-top:3.5rem">
+        <img src="" alt="Full Band Photo" onerror="this.style.display='none'" />
         <div class="group-photo-label">Full Band Photo — replace src="" with image</div>
-        <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+        <div class="img-remove-btn" onclick="removeImage(this)">×</div>
       </div>
 
       <!-- Director -->
@@ -826,10 +939,10 @@
             <h3>Settleslayer</h3>
             <p>Write about Chef</p>
           </div>
-          <div class="about-bio-img" title="Drag an image here to replace">
-            <img src="" alt="Director Photo" onerror="this.style.display='none'" style="display: none;">
+          <div class="about-bio-img">
+            <img src="" alt="Director Photo" onerror="this.style.display='none'" />
             <div class="about-img-placeholder">📸 Director Photo</div>
-            <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
+            <div class="img-remove-btn" onclick="removeImage(this)">×</div>
           </div>
         </div>
       </div>
@@ -841,11 +954,11 @@
 
 <!-- ══════════ ADMIN BAR ══════════ -->
 <div id="adminBar" class="admin-bar">
-  <div class="admin-bar-info">Logged in as <strong id="adminEmail">Cyberdude-101/Southpointbands</strong></div>
+  <div class="admin-bar-info">Logged in as <strong id="adminEmail"></strong></div>
   <div class="admin-bar-btns">
     <button id="editBtn" class="admin-btn" onclick="toggleEditMode()">Edit Mode</button>
-    <button id="saveBtn" class="admin-btn save-btn" onclick="saveChanges()" style="display: none;">Save Changes</button>
-    <button id="cancelBtn" class="admin-btn" onclick="disableEditMode()" style="display: none;">Cancel</button>
+    <button id="saveBtn" class="admin-btn save-btn" onclick="saveChanges()" style="display:none">Save Changes</button>
+    <button id="cancelBtn" class="admin-btn" onclick="disableEditMode()" style="display:none">Cancel</button>
     <button class="admin-btn" onclick="adminLogout()">Log Out</button>
   </div>
 </div>
@@ -940,6 +1053,8 @@
       slot.title = 'Drag an image here to replace';
     });
     document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'block');
+    document.querySelectorAll('.event-delete-btn').forEach(btn => btn.style.display = 'flex');
+    document.getElementById('addEventBtn').style.display = 'block';
     document.getElementById('editBtn').textContent = 'Editing ON';
     document.getElementById('saveBtn').style.display = 'inline-block';
     document.getElementById('cancelBtn').style.display = 'inline-block';
@@ -959,6 +1074,8 @@
       slot.title = '';
     });
     document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'none');
+    document.querySelectorAll('.event-delete-btn').forEach(btn => btn.style.display = 'none');
+    document.getElementById('addEventBtn').style.display = 'none';
     document.getElementById('editBtn').textContent = 'Edit Mode';
     document.getElementById('saveBtn').style.display = 'none';
     document.getElementById('cancelBtn').style.display = 'none';
@@ -1000,6 +1117,120 @@
     };
     reader.onerror = () => console.error('FileReader failed for', file.name);
     reader.readAsDataURL(file);
+  }
+
+  /* ── add / delete events ── */
+  function addEvent() {
+    const list = document.querySelector('.events-list');
+    const row = document.createElement('div');
+    row.className = 'event-row';
+    row.innerHTML =
+      '<div class="event-date">' +
+        '<div class="day" contenteditable="true" data-editable="">1</div>' +
+        '<div class="mon" contenteditable="true" data-editable="">Jan</div>' +
+      '</div>' +
+      '<div class="event-info">' +
+        '<h3 contenteditable="true" data-editable="">New Event</h3>' +
+        '<p contenteditable="true" data-editable="">Location</p>' +
+        '<div class="time" contenteditable="true" data-editable="">Time</div>' +
+      '</div>' +
+      '<button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display:flex">×</button>';
+    list.appendChild(row);
+    row.querySelector('h3').focus();
+  }
+
+  function deleteEvent(btn) {
+    btn.closest('.event-row').remove();
+  }
+
+  /* ── calendar ── */
+  const CAL_MONTHS = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+  const CAL_MON_ABBR = ['jan','feb','mar','apr','may','jun',
+                        'jul','aug','sep','oct','nov','dec'];
+  let calYear, calMonth;
+
+  function getCalEvents() {
+    const evs = [];
+    document.querySelectorAll('.event-row').forEach(row => {
+      const dayEl = row.querySelector('.day');
+      const monEl = row.querySelector('.mon');
+      const titleEl = row.querySelector('.event-info h3');
+      const timeEl  = row.querySelector('.event-info .time');
+      if (!dayEl || !monEl || !titleEl) return;
+      const day = parseInt(dayEl.textContent.trim(), 10);
+      const monIdx = CAL_MON_ABBR.indexOf(monEl.textContent.trim().toLowerCase());
+      if (isNaN(day) || monIdx < 0) return;
+      evs.push({ day, month: monIdx, title: titleEl.textContent.trim(),
+                 time: timeEl ? timeEl.textContent.trim() : '' });
+    });
+    return evs;
+  }
+
+  function renderCalendar() {
+    const now = new Date();
+    document.getElementById('calMonthTitle').textContent =
+      CAL_MONTHS[calMonth] + ' ' + calYear;
+    const firstDay   = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const evs = getCalEvents();
+    let html = '';
+    for (let i = 0; i < firstDay; i++) html += '<div class="cal-cell empty"></div>';
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dayEvs = evs.filter(e => e.day === d && e.month === calMonth);
+      const isToday = now.getFullYear() === calYear && now.getMonth() === calMonth && now.getDate() === d;
+      let cls = 'cal-cell';
+      if (isToday)       cls += ' today';
+      if (dayEvs.length) cls += ' has-event';
+      html += '<div class="' + cls + '" onclick="showDayDetail(' + d + ')">' + d + '</div>';
+    }
+    document.getElementById('calGrid').innerHTML = html;
+    document.getElementById('calEventDetail').style.display = 'none';
+  }
+
+  function showDayDetail(day) {
+    const evs = getCalEvents().filter(e => e.day === day && e.month === calMonth);
+    const detail = document.getElementById('calEventDetail');
+    if (!evs.length) { detail.style.display = 'none'; return; }
+    detail.style.display = 'block';
+    detail.innerHTML = evs.map(e =>
+      '<div class="cal-ev-item">' +
+        '<div class="cal-ev-day">' + day + '</div>' +
+        '<div class="cal-ev-info"><strong>' + e.title + '</strong>' +
+          (e.time ? '<span>' + e.time + '</span>' : '') +
+        '</div>' +
+      '</div>'
+    ).join('');
+    // highlight selected day
+    document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('selected'));
+    const cells = document.querySelectorAll('.cal-cell:not(.empty)');
+    if (cells[day - 1]) cells[day - 1].classList.add('selected');
+  }
+
+  function prevMonth() {
+    calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  }
+  function nextMonth() {
+    calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  }
+
+  function showListView() {
+    document.getElementById('eventsListWrap').style.display = '';
+    document.getElementById('calView').style.display = 'none';
+    document.getElementById('listViewBtn').classList.add('active');
+    document.getElementById('calViewBtn').classList.remove('active');
+  }
+  function showCalView() {
+    const now = new Date();
+    calYear  = now.getFullYear();
+    calMonth = now.getMonth();
+    document.getElementById('eventsListWrap').style.display = 'none';
+    document.getElementById('calView').style.display = '';
+    document.getElementById('listViewBtn').classList.remove('active');
+    document.getElementById('calViewBtn').classList.add('active');
+    renderCalendar();
   }
 
   /* ── remove image from slot ── */
@@ -1123,6 +1354,8 @@
         el.removeAttribute('contenteditable'); el.removeAttribute('data-editable');
       });
       document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'none');
+      document.querySelectorAll('.event-delete-btn').forEach(btn => btn.style.display = 'none');
+      document.getElementById('addEventBtn').style.display = 'none';
       /* reset button states so they aren't baked into the saved HTML */
       document.getElementById('editBtn').textContent = 'Edit Mode';
       document.getElementById('saveBtn').textContent = 'Save Changes';
@@ -1156,6 +1389,8 @@
         });
       });
       document.querySelectorAll('.img-remove-btn').forEach(btn => btn.style.display = 'block');
+      document.querySelectorAll('.event-delete-btn').forEach(btn => btn.style.display = 'flex');
+      document.getElementById('addEventBtn').style.display = 'block';
       document.querySelectorAll(IMG_SLOTS).forEach(slot => {
         slot.removeEventListener('dragover',  onDragOver);
         slot.removeEventListener('dragleave', onDragLeave);
@@ -1191,6 +1426,5 @@
     }
   }
 </script>
-
-
-<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></body></html>
+</body>
+</html>
