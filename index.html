@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Band Name</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -604,18 +603,18 @@
       .half-row    { grid-template-columns: 1fr; }
     }
   </style>
-</head>
-<body>
+<style></style></head>
+<body data-new-gr-c-s-check-loaded="14.1292.0" data-gr-ext-installed="" class="" data-new-gr-c-s-loaded="14.1292.0">
 
 <!-- ══════════ NAV ══════════ -->
 <nav>
   <div class="logo" onclick="go('home')" style="cursor:pointer">SPHS<span>Band</span></div>
   <ul class="nav-links">
-    <li><a href="#" class="active" onclick="go('home',   this)">Home</a></li>
-    <li><a href="#"               onclick="go('events',  this)">Events</a></li>
-    <li><a href="#"               onclick="go('donate',  this)">Donate</a></li>
-    <li><a href="#"               onclick="go('contact', this)">Contact</a></li>
-    <li><a href="#"               onclick="go('extra',   this)">About</a></li>
+    <li><a href="#" class="" onclick="go('home',   this)">Home</a></li>
+    <li><a href="#" onclick="go('events',  this)" class="active">Events</a></li>
+    <li><a href="#" onclick="go('donate',  this)">Donate</a></li>
+    <li><a href="#" onclick="go('contact', this)">Contact</a></li>
+    <li><a href="#" onclick="go('extra',   this)">About</a></li>
   </ul>
   <button class="hamburger" id="burger" aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -623,35 +622,35 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#" class="active" onclick="go('home',   this); closeMenu()">Home</a>
-  <a href="#"               onclick="go('events',  this); closeMenu()">Events</a>
-  <a href="#"               onclick="go('donate',  this); closeMenu()">Donate</a>
-  <a href="#"               onclick="go('contact', this); closeMenu()">Contact</a>
-  <a href="#"               onclick="go('extra',   this); closeMenu()">About</a>
+  <a href="#" class="" onclick="go('home',   this); closeMenu()">Home</a>
+  <a href="#" onclick="go('events',  this); closeMenu()" class="active">Events</a>
+  <a href="#" onclick="go('donate',  this); closeMenu()">Donate</a>
+  <a href="#" onclick="go('contact', this); closeMenu()">Contact</a>
+  <a href="#" onclick="go('extra',   this); closeMenu()">About</a>
 </div>
 
 
 <!-- ══════════ PAGE 1 — HOME ══════════ -->
-<div id="home" class="page active">
+<div id="home" class="page">
 
   <!-- Hero -->
   <div class="hero">
     <div class="hero-badge">Gaston County</div>
 
     <!-- Logo slot: replace src="" with your logo file path -->
-    <div class="logo-slot">
-      <img src="" alt="Band Logo" id="logoImg" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'" />
-      <div id="logoFallback" class="logo-fallback">
+    <div class="logo-slot" title="Drag an image here to replace">
+      <img src="" alt="Band Logo" id="logoImg" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'" style="display: none;">
+      <div id="logoFallback" class="logo-fallback" style="display: flex;">
         <span>🎵</span>
         <p>Drop the logo here<br><small>Replace src="" in the code with the image path</small></p>
       </div>
-      <div class="img-remove-btn" onclick="removeImage(this)">×</div>
+      <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
     </div>
 
     <h1>SPHS<span>Band</span></h1>
     <p>Description.</p>
     <div class="hero-btns">
-      <a href="#" class="btn btn-solid"   onclick="go('events')">Upcoming Events</a>
+      <a href="#" class="btn btn-solid" onclick="go('events')">Upcoming Events</a>
       <a href="#" class="btn btn-outline" onclick="go('donate')">Support Us</a>
       <a href="#" class="btn btn-outline" onclick="go('contact')">Get in Touch</a>
     </div>
@@ -664,25 +663,25 @@
       <h2 class="photos-title">Photos</h2>
       <!-- Asymmetric grid: 1 large left, 2 stacked right, 1 wide bottom -->
       <div class="photo-grid">
-        <div class="photo-slot large">
-          <img src="" alt="Band Photo 1" onerror="this.style.display='none'" />
+        <div class="photo-slot large" title="Drag an image here to replace">
+          <img src="" alt="Band Photo 1" onerror="this.style.display='none'" style="display: none;">
           <div class="photo-label">Photo 1 — replace src="" with image</div>
-          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
         </div>
-        <div class="photo-slot">
-          <img src="" alt="Band Photo 2" onerror="this.style.display='none'" />
+        <div class="photo-slot" title="Drag an image here to replace">
+          <img src="" alt="Band Photo 2" onerror="this.style.display='none'" style="display: none;">
           <div class="photo-label">Photo 2</div>
-          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
         </div>
-        <div class="photo-slot">
-          <img src="" alt="Band Photo 3" onerror="this.style.display='none'" />
+        <div class="photo-slot" title="Drag an image here to replace">
+          <img src="" alt="Band Photo 3" onerror="this.style.display='none'" style="display: none;">
           <div class="photo-label">Photo 3</div>
-          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
         </div>
-        <div class="photo-slot wide">
-          <img src="" alt="Band Photo 4" onerror="this.style.display='none'" />
+        <div class="photo-slot wide" title="Drag an image here to replace">
+          <img src="" alt="Band Photo 4" onerror="this.style.display='none'" style="display: none;">
           <div class="photo-label">Photo 4 — wide banner shot</div>
-          <div class="img-remove-btn" onclick="removeImage(this)">×</div>
+          <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
         </div>
       </div>
     </div>
@@ -692,7 +691,7 @@
 
 
 <!-- ══════════ PAGE 2 — EVENTS ══════════ -->
-<div id="events" class="page">
+<div id="events" class="page active">
   <div class="inner">
     <div class="wrap">
       <div class="eyebrow">Concerts / Shows and competitions</div>
@@ -705,73 +704,73 @@
         <!-- left: calendar -->
         <div id="calView" class="cal-wrap">
           <div class="cal-header">
-            <button class="cal-nav" onclick="prevMonth()">&#8249;</button>
-            <span id="calMonthTitle" class="cal-month-title"></span>
-            <button class="cal-nav" onclick="nextMonth()">&#8250;</button>
+            <button class="cal-nav" onclick="prevMonth()">‹</button>
+            <span id="calMonthTitle" class="cal-month-title">June 2026</span>
+            <button class="cal-nav" onclick="nextMonth()">›</button>
           </div>
           <div class="cal-days-hdr">
             <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
           </div>
-          <div id="calGrid" class="cal-grid"></div>
-          <p id="calNoEvents" style="display:none;color:var(--muted);font-size:0.8rem;margin-top:0.8rem">No events this month</p>
+          <div id="calGrid" class="cal-grid"><div class="cal-cell empty"></div><div class="cal-cell" onclick="highlightDay(1)">1</div><div class="cal-cell" onclick="highlightDay(2)">2</div><div class="cal-cell" onclick="highlightDay(3)">3</div><div class="cal-cell" onclick="highlightDay(4)">4</div><div class="cal-cell" onclick="highlightDay(5)">5</div><div class="cal-cell" onclick="highlightDay(6)">6</div><div class="cal-cell" onclick="highlightDay(7)">7</div><div class="cal-cell" onclick="highlightDay(8)">8</div><div class="cal-cell" onclick="highlightDay(9)">9</div><div class="cal-cell" onclick="highlightDay(10)">10</div><div class="cal-cell" onclick="highlightDay(11)">11</div><div class="cal-cell" onclick="highlightDay(12)">12</div><div class="cal-cell" onclick="highlightDay(13)">13</div><div class="cal-cell has-event" onclick="highlightDay(14)">14</div><div class="cal-cell" onclick="highlightDay(15)">15</div><div class="cal-cell" onclick="highlightDay(16)">16</div><div class="cal-cell" onclick="highlightDay(17)">17</div><div class="cal-cell" onclick="highlightDay(18)">18</div><div class="cal-cell" onclick="highlightDay(19)">19</div><div class="cal-cell" onclick="highlightDay(20)">20</div><div class="cal-cell has-event selected" onclick="highlightDay(21)">21</div><div class="cal-cell" onclick="highlightDay(22)">22</div><div class="cal-cell" onclick="highlightDay(23)">23</div><div class="cal-cell" onclick="highlightDay(24)">24</div><div class="cal-cell" onclick="highlightDay(25)">25</div><div class="cal-cell" onclick="highlightDay(26)">26</div><div class="cal-cell" onclick="highlightDay(27)">27</div><div class="cal-cell" onclick="highlightDay(28)">28</div><div class="cal-cell" onclick="highlightDay(29)">29</div><div class="cal-cell" onclick="highlightDay(30)">30</div></div>
+          <p id="calNoEvents" style="display: none; color: var(--muted); font-size: 0.8rem; margin-top: 0.8rem;">No events this month</p>
         </div>
 
         <!-- right: editable list -->
         <div id="eventsListWrap">
           <div class="events-list">
 
-            <div class="event-row">
+            <div class="event-row highlighted">
               <div class="event-date"><div class="day">14</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
                 <p>Location</p>
                 <div class="time">open time · show time</div>
               </div>
-              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
             </div>
 
-            <div class="event-row">
+            <div class="event-row highlighted">
               <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
                 <p>Location</p>
                 <div class="time">open time · show time</div>
               </div>
-              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
             </div>
 
-            <div class="event-row">
+            <div class="event-row highlighted">
               <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
                 <p>Location</p>
                 <div class="time">open time · show time</div>
               </div>
-              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
             </div>
 
-            <div class="event-row">
+            <div class="event-row highlighted">
               <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
                 <p>Location</p>
                 <div class="time">open time · show time</div>
               </div>
-              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
             </div>
 
-            <div class="event-row">
-              <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+            <div class="event-row highlighted">
+              <div class="event-date"><div class="day">23</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
                 <p>Location</p>
                 <div class="time">open time · show time</div>
               </div>
-              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
             </div>
 
           </div>
-          <button id="addEventBtn" class="add-event-btn" onclick="addEvent()">+ Add Event</button>
+          <button id="addEventBtn" class="add-event-btn" onclick="addEvent()" style="display: none;">+ Add Event</button>
         </div>
 
       </div>
@@ -836,7 +835,7 @@
         <!-- Left: title + info -->
         <div>
           <div class="eyebrow">Get in Touch</div>
-          <h2 class="page-title">Contact & Info</h2>
+          <h2 class="page-title">Contact &amp; Info</h2>
           <p style="color:var(--text);font-size:1rem;line-height:1.75;margin-bottom:2rem">Want to get in touch? Reach us directly through any of the channels below or fill out the form.</p>
           <div class="info-block">
             <div class="info-item">
@@ -882,15 +881,15 @@
           <form class="form-stack" onsubmit="submitContact(event)">
             <div>
               <label>Your name</label>
-              <input type="text" placeholder="Jane Smith" />
+              <input type="text" placeholder="Jane Smith">
             </div>
             <div>
               <label>Email</label>
-              <input type="email" placeholder="jane@email.com" />
+              <input type="email" placeholder="jane@email.com">
             </div>
             <div>
               <label>Subject</label>
-              <input type="text" placeholder="Booking inquiry, collab, just saying hi…" />
+              <input type="text" placeholder="Booking inquiry, collab, just saying hi…">
             </div>
             <div>
               <label>Message</label>
@@ -926,10 +925,10 @@
       </div>
 
       <!-- Group photo -->
-      <div class="group-photo-slot" style="margin-top:3.5rem">
-        <img src="" alt="Full Band Photo" onerror="this.style.display='none'" />
+      <div class="group-photo-slot" style="margin-top:3.5rem" title="Drag an image here to replace">
+        <img src="" alt="Full Band Photo" onerror="this.style.display='none'" style="display: none;">
         <div class="group-photo-label">Full Band Photo — replace src="" with image</div>
-        <div class="img-remove-btn" onclick="removeImage(this)">×</div>
+        <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
       </div>
 
       <!-- Director -->
@@ -940,10 +939,10 @@
             <h3>Settleslayer</h3>
             <p>Write about Chef</p>
           </div>
-          <div class="about-bio-img">
-            <img src="" alt="Director Photo" onerror="this.style.display='none'" />
+          <div class="about-bio-img" title="Drag an image here to replace">
+            <img src="" alt="Director Photo" onerror="this.style.display='none'" style="display: none;">
             <div class="about-img-placeholder">📸 Director Photo</div>
-            <div class="img-remove-btn" onclick="removeImage(this)">×</div>
+            <div class="img-remove-btn" onclick="removeImage(this)" style="display: none;">×</div>
           </div>
         </div>
       </div>
@@ -955,11 +954,11 @@
 
 <!-- ══════════ ADMIN BAR ══════════ -->
 <div id="adminBar" class="admin-bar">
-  <div class="admin-bar-info">Logged in as <strong id="adminEmail"></strong></div>
+  <div class="admin-bar-info">Logged in as <strong id="adminEmail">Cyberdude-101/Southpointbands</strong></div>
   <div class="admin-bar-btns">
     <button id="editBtn" class="admin-btn" onclick="toggleEditMode()">Edit Mode</button>
-    <button id="saveBtn" class="admin-btn save-btn" onclick="saveChanges()" style="display:none">Save Changes</button>
-    <button id="cancelBtn" class="admin-btn" onclick="disableEditMode()" style="display:none">Cancel</button>
+    <button id="saveBtn" class="admin-btn save-btn" onclick="saveChanges()" style="display: none;">Save Changes</button>
+    <button id="cancelBtn" class="admin-btn" onclick="disableEditMode()" style="display: none;">Cancel</button>
     <button class="admin-btn" onclick="adminLogout()">Log Out</button>
   </div>
 </div>
@@ -1436,5 +1435,6 @@
     }
   }
 </script>
-</body>
-</html>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
