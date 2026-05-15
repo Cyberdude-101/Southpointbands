@@ -614,7 +614,7 @@
     <li><a href="#" onclick="go('events',  this)" class="active">Events</a></li>
     <li><a href="#" onclick="go('donate',  this)">Donate</a></li>
     <li><a href="#" onclick="go('contact', this)">Contact</a></li>
-    <li><a href="#" onclick="go('extra',   this)">About</a></li>
+    <li><a href="#" onclick="go('extra',   this)" class="">About</a></li>
   </ul>
   <button class="hamburger" id="burger" aria-label="Open menu">
     <span></span><span></span><span></span>
@@ -626,7 +626,7 @@
   <a href="#" onclick="go('events',  this); closeMenu()" class="active">Events</a>
   <a href="#" onclick="go('donate',  this); closeMenu()">Donate</a>
   <a href="#" onclick="go('contact', this); closeMenu()">Contact</a>
-  <a href="#" onclick="go('extra',   this); closeMenu()">About</a>
+  <a href="#" onclick="go('extra',   this); closeMenu()" class="">About</a>
 </div>
 
 
@@ -705,13 +705,13 @@
         <div id="calView" class="cal-wrap">
           <div class="cal-header">
             <button class="cal-nav" onclick="prevMonth()">‹</button>
-            <span id="calMonthTitle" class="cal-month-title">July 2026</span>
+            <span id="calMonthTitle" class="cal-month-title">August 2026</span>
             <button class="cal-nav" onclick="nextMonth()">›</button>
           </div>
           <div class="cal-days-hdr">
             <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
           </div>
-          <div id="calGrid" class="cal-grid"><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell" onclick="highlightDay(1)">1</div><div class="cal-cell" onclick="highlightDay(2)">2</div><div class="cal-cell" onclick="highlightDay(3)">3</div><div class="cal-cell" onclick="highlightDay(4)">4</div><div class="cal-cell" onclick="highlightDay(5)">5</div><div class="cal-cell" onclick="highlightDay(6)">6</div><div class="cal-cell" onclick="highlightDay(7)">7</div><div class="cal-cell" onclick="highlightDay(8)">8</div><div class="cal-cell" onclick="highlightDay(9)">9</div><div class="cal-cell" onclick="highlightDay(10)">10</div><div class="cal-cell" onclick="highlightDay(11)">11</div><div class="cal-cell" onclick="highlightDay(12)">12</div><div class="cal-cell" onclick="highlightDay(13)">13</div><div class="cal-cell" onclick="highlightDay(14)">14</div><div class="cal-cell" onclick="highlightDay(15)">15</div><div class="cal-cell" onclick="highlightDay(16)">16</div><div class="cal-cell" onclick="highlightDay(17)">17</div><div class="cal-cell" onclick="highlightDay(18)">18</div><div class="cal-cell" onclick="highlightDay(19)">19</div><div class="cal-cell" onclick="highlightDay(20)">20</div><div class="cal-cell" onclick="highlightDay(21)">21</div><div class="cal-cell" onclick="highlightDay(22)">22</div><div class="cal-cell" onclick="highlightDay(23)">23</div><div class="cal-cell" onclick="highlightDay(24)">24</div><div class="cal-cell" onclick="highlightDay(25)">25</div><div class="cal-cell" onclick="highlightDay(26)">26</div><div class="cal-cell" onclick="highlightDay(27)">27</div><div class="cal-cell" onclick="highlightDay(28)">28</div><div class="cal-cell" onclick="highlightDay(29)">29</div><div class="cal-cell" onclick="highlightDay(30)">30</div><div class="cal-cell" onclick="highlightDay(31)">31</div></div>
+          <div id="calGrid" class="cal-grid"><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell empty"></div><div class="cal-cell" onclick="highlightDay(1)">1</div><div class="cal-cell" onclick="highlightDay(2)">2</div><div class="cal-cell" onclick="highlightDay(3)">3</div><div class="cal-cell" onclick="highlightDay(4)">4</div><div class="cal-cell" onclick="highlightDay(5)">5</div><div class="cal-cell" onclick="highlightDay(6)">6</div><div class="cal-cell" onclick="highlightDay(7)">7</div><div class="cal-cell" onclick="highlightDay(8)">8</div><div class="cal-cell" onclick="highlightDay(9)">9</div><div class="cal-cell" onclick="highlightDay(10)">10</div><div class="cal-cell" onclick="highlightDay(11)">11</div><div class="cal-cell" onclick="highlightDay(12)">12</div><div class="cal-cell" onclick="highlightDay(13)">13</div><div class="cal-cell" onclick="highlightDay(14)">14</div><div class="cal-cell" onclick="highlightDay(15)">15</div><div class="cal-cell" onclick="highlightDay(16)">16</div><div class="cal-cell" onclick="highlightDay(17)">17</div><div class="cal-cell" onclick="highlightDay(18)">18</div><div class="cal-cell" onclick="highlightDay(19)">19</div><div class="cal-cell" onclick="highlightDay(20)">20</div><div class="cal-cell" onclick="highlightDay(21)">21</div><div class="cal-cell" onclick="highlightDay(22)">22</div><div class="cal-cell" onclick="highlightDay(23)">23</div><div class="cal-cell" onclick="highlightDay(24)">24</div><div class="cal-cell" onclick="highlightDay(25)">25</div><div class="cal-cell" onclick="highlightDay(26)">26</div><div class="cal-cell" onclick="highlightDay(27)">27</div><div class="cal-cell" onclick="highlightDay(28)">28</div><div class="cal-cell" onclick="highlightDay(29)">29</div><div class="cal-cell" onclick="highlightDay(30)">30</div><div class="cal-cell" onclick="highlightDay(31)">31</div></div>
           <p id="calNoEvents" style="display: block; color: var(--muted); font-size: 0.8rem; margin-top: 0.8rem;">No events this month</p>
         </div>
 
@@ -729,7 +729,7 @@
 
             
 
-          <div class="event-row">
+          <div class="event-row highlighted">
               <div class="event-date"><div class="day">14</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
@@ -737,7 +737,7 @@
                 <div class="time">open time · show time</div>
               </div>
               <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
-            </div><div class="event-row">
+            </div><div class="event-row highlighted">
               <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
@@ -745,7 +745,7 @@
                 <div class="time">open time · show time</div>
               </div>
               <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
-            </div><div class="event-row">
+            </div><div class="event-row highlighted">
               <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
@@ -769,7 +769,7 @@
                 <div class="time">open time · show time</div>
               </div>
               <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
-            </div></div>
+            </div><div class="event-row"><div class="event-date"><div class="day">3</div><div class="mon">Aug</div></div><div class="event-info"><h3>New Event</h3><p>Location</p><div class="time">Time</div></div><button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button></div></div>
           <button id="addEventBtn" class="add-event-btn" onclick="addEvent()" style="display: none;">+ Add Event</button>
         </div>
 
