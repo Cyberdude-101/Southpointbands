@@ -722,7 +722,7 @@
           <div class="cal-days-hdr">
             <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
           </div>
-          <div id="calGrid" class="cal-grid"><div class="cal-cell empty"></div><div class="cal-cell" onclick="highlightDay(1)">1</div><div class="cal-cell" onclick="highlightDay(2)">2</div><div class="cal-cell" onclick="highlightDay(3)">3</div><div class="cal-cell" onclick="highlightDay(4)">4</div><div class="cal-cell" onclick="highlightDay(5)">5</div><div class="cal-cell" onclick="highlightDay(6)">6</div><div class="cal-cell" onclick="highlightDay(7)">7</div><div class="cal-cell" onclick="highlightDay(8)">8</div><div class="cal-cell" onclick="highlightDay(9)">9</div><div class="cal-cell has-event" onclick="highlightDay(10)">10</div><div class="cal-cell" onclick="highlightDay(11)">11</div><div class="cal-cell" onclick="highlightDay(12)">12</div><div class="cal-cell" onclick="highlightDay(13)">13</div><div class="cal-cell has-event" onclick="highlightDay(14)">14</div><div class="cal-cell" onclick="highlightDay(15)">15</div><div class="cal-cell" onclick="highlightDay(16)">16</div><div class="cal-cell" onclick="highlightDay(17)">17</div><div class="cal-cell" onclick="highlightDay(18)">18</div><div class="cal-cell" onclick="highlightDay(19)">19</div><div class="cal-cell" onclick="highlightDay(20)">20</div><div class="cal-cell has-event" onclick="highlightDay(21)">21</div><div class="cal-cell" onclick="highlightDay(22)">22</div><div class="cal-cell" onclick="highlightDay(23)">23</div><div class="cal-cell" onclick="highlightDay(24)">24</div><div class="cal-cell" onclick="highlightDay(25)">25</div><div class="cal-cell" onclick="highlightDay(26)">26</div><div class="cal-cell" onclick="highlightDay(27)">27</div><div class="cal-cell" onclick="highlightDay(28)">28</div><div class="cal-cell" onclick="highlightDay(29)">29</div><div class="cal-cell" onclick="highlightDay(30)">30</div></div>
+          <div id="calGrid" class="cal-grid"><div class="cal-cell empty"></div><div class="cal-cell" onclick="highlightDay(1)">1</div><div class="cal-cell" onclick="highlightDay(2)">2</div><div class="cal-cell" onclick="highlightDay(3)">3</div><div class="cal-cell" onclick="highlightDay(4)">4</div><div class="cal-cell" onclick="highlightDay(5)">5</div><div class="cal-cell" onclick="highlightDay(6)">6</div><div class="cal-cell" onclick="highlightDay(7)">7</div><div class="cal-cell" onclick="highlightDay(8)">8</div><div class="cal-cell" onclick="highlightDay(9)">9</div><div class="cal-cell" onclick="highlightDay(10)">10</div><div class="cal-cell" onclick="highlightDay(11)">11</div><div class="cal-cell" onclick="highlightDay(12)">12</div><div class="cal-cell" onclick="highlightDay(13)">13</div><div class="cal-cell has-event" onclick="highlightDay(14)">14</div><div class="cal-cell" onclick="highlightDay(15)">15</div><div class="cal-cell" onclick="highlightDay(16)">16</div><div class="cal-cell" onclick="highlightDay(17)">17</div><div class="cal-cell" onclick="highlightDay(18)">18</div><div class="cal-cell" onclick="highlightDay(19)">19</div><div class="cal-cell" onclick="highlightDay(20)">20</div><div class="cal-cell has-event" onclick="highlightDay(21)">21</div><div class="cal-cell" onclick="highlightDay(22)">22</div><div class="cal-cell" onclick="highlightDay(23)">23</div><div class="cal-cell" onclick="highlightDay(24)">24</div><div class="cal-cell" onclick="highlightDay(25)">25</div><div class="cal-cell" onclick="highlightDay(26)">26</div><div class="cal-cell" onclick="highlightDay(27)">27</div><div class="cal-cell" onclick="highlightDay(28)">28</div><div class="cal-cell" onclick="highlightDay(29)">29</div><div class="cal-cell" onclick="highlightDay(30)">30</div></div>
           <p id="calNoEvents" style="display:none;color:var(--muted);font-size:0.8rem;margin-top:0.8rem">No events this month</p>
         </div>
 
@@ -741,14 +741,6 @@
             
 
           <div class="event-row">
-              <div class="event-date" title="Click to pick date"><div class="day">10</div><div class="mon">Jun</div></div>
-              <div class="event-info">
-                <h3>Event Name Here</h3>
-                <p>Location</p>
-                <div class="time">open time · show time</div>
-              </div>
-              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
-            </div><div class="event-row">
               <div class="event-date" title="Click to pick date"><div class="day">14</div><div class="mon">Jun</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
@@ -774,6 +766,14 @@
               <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
             </div><div class="event-row">
               <div class="event-date" title="Click to pick date"><div class="day">21</div><div class="mon">Jun</div></div>
+              <div class="event-info">
+                <h3>Event Name Here</h3>
+                <p>Location</p>
+                <div class="time">open time · show time</div>
+              </div>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event" style="display: none;">×</button>
+            </div><div class="event-row">
+              <div class="event-date" title="Click to pick date"><div class="day">11</div><div class="mon">Aug</div></div>
               <div class="event-info">
                 <h3>Event Name Here</h3>
                 <p>Location</p>
@@ -1554,16 +1554,16 @@
 </script>
 
 <!-- ── date picker popup ── -->
-<div id="datePicker" style="display: none; position: fixed; z-index: 900; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem; width: 232px; box-shadow: rgba(0, 0, 0, 0.65) 0px 8px 32px; left: 772.5px; top: 431.656px;">
+<div id="datePicker" style="display: none; position: fixed; z-index: 900; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem; width: 232px; box-shadow: rgba(0, 0, 0, 0.65) 0px 8px 32px; left: 772.5px; top: 295.188px;">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem">
     <button class="cal-nav" onclick="dpPrev()">‹</button>
-    <span id="dpTitle" style="font-size:0.85rem;font-weight:700">June 2026</span>
+    <span id="dpTitle" style="font-size:0.85rem;font-weight:700">August 2026</span>
     <button class="cal-nav" onclick="dpNext()">›</button>
   </div>
   <div class="cal-days-hdr" style="margin-bottom:3px">
     <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
   </div>
-  <div id="dpGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px"><div class="dp-cell empty"></div><div class="dp-cell" onclick="selectDate(1)">1</div><div class="dp-cell" onclick="selectDate(2)">2</div><div class="dp-cell" onclick="selectDate(3)">3</div><div class="dp-cell" onclick="selectDate(4)">4</div><div class="dp-cell" onclick="selectDate(5)">5</div><div class="dp-cell" onclick="selectDate(6)">6</div><div class="dp-cell" onclick="selectDate(7)">7</div><div class="dp-cell" onclick="selectDate(8)">8</div><div class="dp-cell" onclick="selectDate(9)">9</div><div class="dp-cell" onclick="selectDate(10)">10</div><div class="dp-cell" onclick="selectDate(11)">11</div><div class="dp-cell" onclick="selectDate(12)">12</div><div class="dp-cell" onclick="selectDate(13)">13</div><div class="dp-cell" onclick="selectDate(14)">14</div><div class="dp-cell" onclick="selectDate(15)">15</div><div class="dp-cell" onclick="selectDate(16)">16</div><div class="dp-cell" onclick="selectDate(17)">17</div><div class="dp-cell" onclick="selectDate(18)">18</div><div class="dp-cell" onclick="selectDate(19)">19</div><div class="dp-cell" onclick="selectDate(20)">20</div><div class="dp-cell dp-selected" onclick="selectDate(21)">21</div><div class="dp-cell" onclick="selectDate(22)">22</div><div class="dp-cell" onclick="selectDate(23)">23</div><div class="dp-cell" onclick="selectDate(24)">24</div><div class="dp-cell" onclick="selectDate(25)">25</div><div class="dp-cell" onclick="selectDate(26)">26</div><div class="dp-cell" onclick="selectDate(27)">27</div><div class="dp-cell" onclick="selectDate(28)">28</div><div class="dp-cell" onclick="selectDate(29)">29</div><div class="dp-cell" onclick="selectDate(30)">30</div></div>
+  <div id="dpGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px"><div class="dp-cell empty"></div><div class="dp-cell empty"></div><div class="dp-cell empty"></div><div class="dp-cell empty"></div><div class="dp-cell empty"></div><div class="dp-cell empty"></div><div class="dp-cell" onclick="selectDate(1)">1</div><div class="dp-cell" onclick="selectDate(2)">2</div><div class="dp-cell" onclick="selectDate(3)">3</div><div class="dp-cell" onclick="selectDate(4)">4</div><div class="dp-cell" onclick="selectDate(5)">5</div><div class="dp-cell" onclick="selectDate(6)">6</div><div class="dp-cell" onclick="selectDate(7)">7</div><div class="dp-cell" onclick="selectDate(8)">8</div><div class="dp-cell" onclick="selectDate(9)">9</div><div class="dp-cell" onclick="selectDate(10)">10</div><div class="dp-cell" onclick="selectDate(11)">11</div><div class="dp-cell" onclick="selectDate(12)">12</div><div class="dp-cell" onclick="selectDate(13)">13</div><div class="dp-cell" onclick="selectDate(14)">14</div><div class="dp-cell" onclick="selectDate(15)">15</div><div class="dp-cell" onclick="selectDate(16)">16</div><div class="dp-cell" onclick="selectDate(17)">17</div><div class="dp-cell" onclick="selectDate(18)">18</div><div class="dp-cell" onclick="selectDate(19)">19</div><div class="dp-cell" onclick="selectDate(20)">20</div><div class="dp-cell" onclick="selectDate(21)">21</div><div class="dp-cell" onclick="selectDate(22)">22</div><div class="dp-cell" onclick="selectDate(23)">23</div><div class="dp-cell" onclick="selectDate(24)">24</div><div class="dp-cell" onclick="selectDate(25)">25</div><div class="dp-cell" onclick="selectDate(26)">26</div><div class="dp-cell" onclick="selectDate(27)">27</div><div class="dp-cell" onclick="selectDate(28)">28</div><div class="dp-cell" onclick="selectDate(29)">29</div><div class="dp-cell" onclick="selectDate(30)">30</div><div class="dp-cell" onclick="selectDate(31)">31</div></div>
 </div>
 
 
