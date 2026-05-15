@@ -525,16 +525,17 @@
     .add-event-btn:hover { background: rgba(247,25,25,0.08); border-color: var(--accent); }
 
     /* ─────────── CALENDAR VIEW ─────────── */
-    .events-view-toggle { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
-    .view-btn {
-      padding: 0.42rem 1rem; border: 1px solid var(--border);
-      background: none; color: var(--muted); border-radius: 3px;
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
-      font-family: inherit;
+    .events-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2.5rem;
+      align-items: start;
     }
-    .view-btn.active, .view-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .view-btn.active { background: rgba(247,25,25,0.1); }
+    @keyframes eventFlash {
+      0%   { background: rgba(247,25,25,0.25); }
+      100% { background: transparent; }
+    }
+    .event-row.highlighted { animation: eventFlash 1.2s ease-out forwards; }
 
     .cal-wrap { }
     .cal-header {
@@ -595,6 +596,7 @@
       .donate-grid,
       .contact-grid  { grid-template-columns: 1fr; gap: 2rem; }
 
+      .events-layout { grid-template-columns: 1fr; }
       .event-row { grid-template-columns: 56px 1fr; }
       .event-action { display: none; }
 
@@ -697,82 +699,81 @@
       <h2 class="page-title">Upcoming Events</h2>
       <p class="page-lead">This is our upcoming events</p>
 
-      <!-- view toggle -->
-      <div class="events-view-toggle">
-        <button id="listViewBtn" class="view-btn active" onclick="showListView()">☰ List</button>
-        <button id="calViewBtn"  class="view-btn"        onclick="showCalView()">📅 Calendar</button>
-      </div>
+      <!-- calendar + list side by side -->
+      <div class="events-layout">
 
-      <!-- list view -->
-      <div id="eventsListWrap">
-        <div class="events-list">
-
-          <div class="event-row">
-            <div class="event-date"><div class="day">14</div><div class="mon">Jun</div></div>
-            <div class="event-info">
-              <h3>Event Name Here</h3>
-              <p>Location</p>
-              <div class="time">open time · show time</div>
-            </div>
-            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+        <!-- left: calendar -->
+        <div id="calView" class="cal-wrap">
+          <div class="cal-header">
+            <button class="cal-nav" onclick="prevMonth()">&#8249;</button>
+            <span id="calMonthTitle" class="cal-month-title"></span>
+            <button class="cal-nav" onclick="nextMonth()">&#8250;</button>
           </div>
-
-          <div class="event-row">
-            <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
-            <div class="event-info">
-              <h3>Event Name Here</h3>
-              <p>Location</p>
-              <div class="time">open time · show time</div>
-            </div>
-            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+          <div class="cal-days-hdr">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
           </div>
-
-          <div class="event-row">
-            <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
-            <div class="event-info">
-              <h3>Event Name Here</h3>
-              <p>Location</p>
-              <div class="time">open time · show time</div>
-            </div>
-            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
-          </div>
-
-          <div class="event-row">
-            <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
-            <div class="event-info">
-              <h3>Event Name Here</h3>
-              <p>Location</p>
-              <div class="time">open time · show time</div>
-            </div>
-            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
-          </div>
-
-          <div class="event-row">
-            <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
-            <div class="event-info">
-              <h3>Event Name Here</h3>
-              <p>Location</p>
-              <div class="time">open time · show time</div>
-            </div>
-            <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
-          </div>
-
+          <div id="calGrid" class="cal-grid"></div>
+          <p id="calNoEvents" style="display:none;color:var(--muted);font-size:0.8rem;margin-top:0.8rem">No events this month</p>
         </div>
-        <button id="addEventBtn" class="add-event-btn" onclick="addEvent()">+ Add Event</button>
-      </div>
 
-      <!-- calendar view (hidden by default) -->
-      <div id="calView" class="cal-wrap" style="display:none">
-        <div class="cal-header">
-          <button class="cal-nav" onclick="prevMonth()">&#8249;</button>
-          <span id="calMonthTitle" class="cal-month-title"></span>
-          <button class="cal-nav" onclick="nextMonth()">&#8250;</button>
+        <!-- right: editable list -->
+        <div id="eventsListWrap">
+          <div class="events-list">
+
+            <div class="event-row">
+              <div class="event-date"><div class="day">14</div><div class="mon">Jun</div></div>
+              <div class="event-info">
+                <h3>Event Name Here</h3>
+                <p>Location</p>
+                <div class="time">open time · show time</div>
+              </div>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+              <div class="event-info">
+                <h3>Event Name Here</h3>
+                <p>Location</p>
+                <div class="time">open time · show time</div>
+              </div>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+              <div class="event-info">
+                <h3>Event Name Here</h3>
+                <p>Location</p>
+                <div class="time">open time · show time</div>
+              </div>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+              <div class="event-info">
+                <h3>Event Name Here</h3>
+                <p>Location</p>
+                <div class="time">open time · show time</div>
+              </div>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+            </div>
+
+            <div class="event-row">
+              <div class="event-date"><div class="day">21</div><div class="mon">Jun</div></div>
+              <div class="event-info">
+                <h3>Event Name Here</h3>
+                <p>Location</p>
+                <div class="time">open time · show time</div>
+              </div>
+              <button class="event-delete-btn" onclick="deleteEvent(this)" title="Delete event">×</button>
+            </div>
+
+          </div>
+          <button id="addEventBtn" class="add-event-btn" onclick="addEvent()">+ Add Event</button>
         </div>
-        <div class="cal-days-hdr">
-          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-        </div>
-        <div id="calGrid" class="cal-grid"></div>
-        <div id="calEventDetail" class="cal-event-detail" style="display:none"></div>
+
       </div>
     </div>
   </div>
@@ -981,6 +982,7 @@
         if (a.textContent.trim() === txt) a.classList.add('active');
       });
     }
+    if (pageId === 'events') initCalendar();
     window.scrollTo(0, 0);
     return false;
   }
@@ -1167,44 +1169,69 @@
     return evs;
   }
 
+  function initCalendar() {
+    /* jump to the month of the first upcoming event, otherwise current month */
+    const now = new Date();
+    const evs = getCalEvents();
+    calYear  = now.getFullYear();
+    calMonth = now.getMonth();
+    if (evs.length) {
+      const upcoming = evs
+        .filter(e => e.month > now.getMonth() ||
+                    (e.month === now.getMonth() && e.day >= now.getDate()))
+        .sort((a, b) => a.month - b.month || a.day - b.day);
+      if (upcoming.length) calMonth = upcoming[0].month;
+      else {
+        /* all events are in the past — show first event month */
+        const sorted = evs.slice().sort((a, b) => a.month - b.month || a.day - b.day);
+        calMonth = sorted[0].month;
+      }
+    }
+    renderCalendar();
+  }
+
   function renderCalendar() {
     const now = new Date();
     document.getElementById('calMonthTitle').textContent =
       CAL_MONTHS[calMonth] + ' ' + calYear;
-    const firstDay   = new Date(calYear, calMonth, 1).getDay();
+    const firstDay    = new Date(calYear, calMonth, 1).getDay();
     const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
     const evs = getCalEvents();
+    const monthHasEvents = evs.some(e => e.month === calMonth);
+    document.getElementById('calNoEvents').style.display = monthHasEvents ? 'none' : 'block';
     let html = '';
     for (let i = 0; i < firstDay; i++) html += '<div class="cal-cell empty"></div>';
     for (let d = 1; d <= daysInMonth; d++) {
-      const dayEvs = evs.filter(e => e.day === d && e.month === calMonth);
+      const hasEv  = evs.some(e => e.day === d && e.month === calMonth);
       const isToday = now.getFullYear() === calYear && now.getMonth() === calMonth && now.getDate() === d;
       let cls = 'cal-cell';
-      if (isToday)       cls += ' today';
-      if (dayEvs.length) cls += ' has-event';
-      html += '<div class="' + cls + '" onclick="showDayDetail(' + d + ')">' + d + '</div>';
+      if (isToday) cls += ' today';
+      if (hasEv)   cls += ' has-event';
+      html += '<div class="' + cls + '" onclick="highlightDay(' + d + ')">' + d + '</div>';
     }
     document.getElementById('calGrid').innerHTML = html;
-    document.getElementById('calEventDetail').style.display = 'none';
   }
 
-  function showDayDetail(day) {
-    const evs = getCalEvents().filter(e => e.day === day && e.month === calMonth);
-    const detail = document.getElementById('calEventDetail');
-    if (!evs.length) { detail.style.display = 'none'; return; }
-    detail.style.display = 'block';
-    detail.innerHTML = evs.map(e =>
-      '<div class="cal-ev-item">' +
-        '<div class="cal-ev-day">' + day + '</div>' +
-        '<div class="cal-ev-info"><strong>' + e.title + '</strong>' +
-          (e.time ? '<span>' + e.time + '</span>' : '') +
-        '</div>' +
-      '</div>'
-    ).join('');
-    // highlight selected day
+  function highlightDay(day) {
+    /* mark selected day on calendar */
     document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('selected'));
     const cells = document.querySelectorAll('.cal-cell:not(.empty)');
     if (cells[day - 1]) cells[day - 1].classList.add('selected');
+
+    /* flash-highlight matching event rows in the list */
+    const matching = [];
+    document.querySelectorAll('.event-row').forEach(row => {
+      const d = parseInt(row.querySelector('.day').textContent.trim(), 10);
+      const m = CAL_MON_ABBR.indexOf(row.querySelector('.mon').textContent.trim().toLowerCase());
+      if (d === day && m === calMonth) matching.push(row);
+    });
+    if (!matching.length) return;
+    matching.forEach(row => {
+      row.classList.remove('highlighted');
+      void row.offsetWidth; /* force reflow to restart animation */
+      row.classList.add('highlighted');
+    });
+    matching[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   function prevMonth() {
@@ -1213,23 +1240,6 @@
   }
   function nextMonth() {
     calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
-    renderCalendar();
-  }
-
-  function showListView() {
-    document.getElementById('eventsListWrap').style.display = '';
-    document.getElementById('calView').style.display = 'none';
-    document.getElementById('listViewBtn').classList.add('active');
-    document.getElementById('calViewBtn').classList.remove('active');
-  }
-  function showCalView() {
-    const now = new Date();
-    calYear  = now.getFullYear();
-    calMonth = now.getMonth();
-    document.getElementById('eventsListWrap').style.display = 'none';
-    document.getElementById('calView').style.display = '';
-    document.getElementById('listViewBtn').classList.remove('active');
-    document.getElementById('calViewBtn').classList.add('active');
     renderCalendar();
   }
 
